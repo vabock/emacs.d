@@ -1,9 +1,10 @@
 (setq inhibit-splash-screen t)
 
 (let ((default-directory (expand-file-name "~/.emacs.d/lisp")))
-  (add-to-list 'load-path default-directory)
-  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-      (normal-top-level-add-subdirs-to-load-path)))
+  (when (file-accessible-directory-p default-directory)
+    (add-to-list 'load-path default-directory)
+    (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+        (normal-top-level-add-subdirs-to-load-path))))
 
 (tool-bar-mode 0)
 (global-linum-mode 1)
@@ -76,12 +77,13 @@
              (height              . 50))	; フレーム高(文字数)
            default-frame-alist)))
 
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (require 'color-theme-twilight)
-     (color-theme-twilight)))
+(when (locate-library "color-theme")
+  (require 'color-theme)
+  (eval-after-load "color-theme"
+    '(progn
+       (color-theme-initialize)
+       (require 'color-theme-twilight)
+       (color-theme-twilight))))
 
 ;; SKK
 (require 'skk-autoloads)
