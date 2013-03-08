@@ -122,7 +122,8 @@
 (auto-compile-global-mode 1)
 
 (require 'server)
-(server-start)
+(unless (server-running-p)
+  (server-start))
 
 (put 'narrow-to-region 'disabled nil)
 
