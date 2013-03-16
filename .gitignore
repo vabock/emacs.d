@@ -1,2 +1,8 @@
 *.elc
 *~
+info/
+lisp/
+share/
+tutorial/
+server/
+auto-save-list/
