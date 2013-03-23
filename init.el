@@ -114,12 +114,17 @@
 (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+;; scala-mode
+(if (locate-library "scala-mode")
+    (require 'scala-mode-auto))
+
 ;; auto-compile-mode
 ;; http://emacswiki.org/emacs/AutoRecompile
 ;; https://github.com/tarsius/auto-compile
 ;(autoload 'auto-compile-mode "auto-compile" nil t)
-(require 'auto-compile)
-(auto-compile-global-mode 1)
+(when (locate-library "auto-compile")
+  (require 'auto-compile)
+  (auto-compile-global-mode 1))
 
 (require 'server)
 (unless (server-running-p)
