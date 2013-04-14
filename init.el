@@ -6,12 +6,16 @@
     (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
         (normal-top-level-add-subdirs-to-load-path))))
 
-(tool-bar-mode 0)
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode 0))
+(if (not window-system)
+    (menu-bar-mode 0))
+
 (global-linum-mode 1)
 (column-number-mode 1)
 (line-number-mode 0)
 ;; カーソル行を強調表示
-(global-hl-line-mode 1)
+(global-hl-line-mode (if window-system 1 0))
 ;;; ホイールマウス
 (mouse-wheel-mode 1)
 (setq mouse-wheel-follow-mouse t)
@@ -53,6 +57,14 @@
 (if (eq window-system 'w32)
     (load (expand-file-name "~/.emacs.d/init-w32")))
 
+;; cygwin以外のターミナルの場合
+(when (and (not window-system)
+           (not (string= "cygwin" (getenv "TERM"))))
+  (set-default-coding-systems 'utf-8)
+  (set-buffer-file-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8))
+
 (define-key key-translation-map (kbd "C-h") (kbd "DEL"))
 ;(keyboard-translate ?\C-h ?\C-?)
 ;(global-set-key "\C-h" nil)
@@ -86,15 +98,16 @@
        (color-theme-twilight))))
 
 ;; SKK
-(require 'skk-autoloads)
-(global-set-key "\C-x\C-j" 'skk-mode)
-(global-set-key "\C-xj" 'skk-auto-fill-mode)
-(global-set-key "\C-xt" 'skk-tutorial)
+(when (locate-library "skk-autoloads")
+  (require 'skk-autoloads)
+  (global-set-key "\C-x\C-j" 'skk-mode)
+  (global-set-key "\C-xj" 'skk-auto-fill-mode)
+  (global-set-key "\C-xt" 'skk-tutorial)
 
 ; (setq skk-large-jisyo (expand-file-name "~/.emacs.d/share/skk/SKK-JISYO.L"))
-(let ((cdb (expand-file-name "~/.emacs.d/share/skk/SKK-JISYO.L.cdb")))
-  (if (file-exists-p cdb)
-      (setq skk-cdb-large-jisyo cdb)))
+  (let ((cdb (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L.cdb")))
+    (if (file-exists-p cdb)
+	(setq skk-cdb-large-jisyo cdb))))
 
 ;; coffee-script mode
 (autoload 'coffee-mode "coffee-mode" nil t)
