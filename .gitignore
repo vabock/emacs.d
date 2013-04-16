@@ -1,7 +1,8 @@
 *.elc
 *~
+etc/
 info/
-lisp/
+elisp/
 share/
 tutorial/
 server/
