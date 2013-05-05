@@ -1,3 +1,5 @@
+(setq grep-use-null-device nil)
+
 ;; フォント設定
 (setq w32-enable-synthesized-fonts t)
 (setq w32-use-w32-font-dialog nil)
@@ -21,11 +23,9 @@
 (setq-default w32-ime-mode-line-state-indicator "[--]") ;; おこのみで
 (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]")) ;; おこのみで
 (w32-ime-initialize)
-(defun nop () (interactive) t)
-(global-set-key (kbd "M-<kanji>") 'nop)
+(global-set-key (kbd "M-<kanji>") (lambda () (interactive) t))
 
 ;;; Local Variables:
 ;;; coding: utf-8-unix
-;;; mode: lisp
-;;; mode: auto-compile
+;;; mode: emacs-lisp
 ;;; End:
