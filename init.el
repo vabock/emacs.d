@@ -19,7 +19,7 @@
 ;;; ホイールマウス
 (unless (fboundp 'track-mouse)
   (defun track-mouse (e)))
-(xterm-mouse-mode 1)
+;(xterm-mouse-mode 1)
 (require 'mouse)
 (require 'mwheel)
 (mouse-wheel-mode 1)
@@ -75,7 +75,7 @@
 ;;(global-set-key "\C-h" 'delete-backward-char)
 ;(global-set-key "\C-xh" 'help-command)
 
-(global-unset-key"\C-xm")
+(global-unset-key "\C-xm")
 
 ;;; vcを停止する
 (setq vc-handled-backends nil)
@@ -97,12 +97,14 @@
 
 ;; setup package.el
 (when (require 'package nil 'noerror)
-  (setq package-user-dir "~/.emacs.d/elisp/elpa/")
+  (setq package-user-dir "~/.emacs.d/elisp/elpa")
   (add-to-list 'package-archives
                '("melpa" . "http://melpa.milkbox.net/packages/") t)
   (package-initialize))
 
-(add-to-list 'load-path "~/.emacs.d/elisp/el-get/el-get/")
+(add-to-list 'load-path "~/.emacs.d/elisp/el-get/el-get")
+(setq el-get-dir "~/.emacs.d/elisp/el-get/")
+(setq el-get-generate-autoloads nil)
 
 (unless (or (eq system-type 'windows-nt)
             (require 'el-get nil 'noerror))
@@ -112,13 +114,14 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
-(setq el-get-dir "~/.emacs.d/elisp/el-get/")
-(setq el-get-generate-autoloads nil)
-
 ;(el-get 'sync)
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
+(require 'solarized-dark-theme)
+;(load-theme ‘solarized-dark t)
 
-(when (require 'color-theme nil 'noerror)
+(when (locate-library "color-theme-twilight")
+  (require 'color-theme)
   (eval-after-load "color-theme"
     '(progn
        (color-theme-initialize)
@@ -169,6 +172,19 @@
   (server-start))
 
 (put 'narrow-to-region 'disabled nil)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 ;;; Local Variables:
 ;;; coding: utf-8-unix
