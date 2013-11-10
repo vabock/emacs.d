@@ -116,9 +116,9 @@
 
 ;(el-get 'sync)
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
-(require 'solarized-dark-theme)
+;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
+(require 'solarized-dark-theme)
 
 (when (locate-library "color-theme-twilight")
   (require 'color-theme)
@@ -145,10 +145,11 @@
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 
-;; js2-mode
-;; https://github.com/mooz/js2-mode
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(custom-set-variables '(coffee-tab-width 2))
+
+;; js3-mode
+(autoload 'js3-mode "js3-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.\\(js\\|json\\)$" . js3-mode))
 
 ;; yaml-mode
 ;; https://github.com/yoshiki/yaml-mode
@@ -190,3 +191,4 @@
 ;;; coding: utf-8-unix
 ;;; mode: emacs-lisp
 ;;; End:
+(put 'upcase-region 'disabled nil)
