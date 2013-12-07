@@ -118,7 +118,8 @@
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
-(require 'solarized-dark-theme)
+(if (locate-library "solarized-dark-theme")
+    (require 'solarized-dark-theme))
 
 (when (locate-library "color-theme-twilight")
   (require 'color-theme)
@@ -127,6 +128,50 @@
        (color-theme-initialize)
        (require 'color-theme-twilight)
        (color-theme-twilight))))
+
+(require 'whitespace)
+(setq whitespace-style '(face           ; faceで可視化
+                         trailing       ; 行末
+                         tabs           ; タブ
+                         spaces         ; スペース
+                         empty          ; 先頭/末尾の空行
+                         space-mark     ; 表示のマッピング
+                         tab-mark
+                         ))
+
+(setq whitespace-display-mappings
+      '((space-mark ?\u3000 [?\u25a1])
+        ;; WARNING: the mapping below has a problem.
+        ;; When a TAB occupies exactly one column, it will display the
+        ;; character ?\xBB at that column followed by a TAB which goes to
+        ;; the next TAB column.
+        ;; If this is a problem for you, please, comment the line below.
+        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+
+;; スペースは全角のみを可視化
+(setq whitespace-space-regexp "\\(\u3000+\\)")
+
+;; 保存前に自動でクリーンアップ
+(setq whitespace-action '(auto-cleanup))
+;(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
+
+(global-whitespace-mode 1)
+
+(defvar my/bg-color "#232323")
+(set-face-attribute 'whitespace-trailing nil
+                    :background my/bg-color
+                    :foreground "DeepPink"
+                    :underline t)
+(set-face-attribute 'whitespace-tab nil
+                    :background my/bg-color
+                    :foreground "LightSkyBlue"
+                    :underline t)
+(set-face-attribute 'whitespace-space nil
+                    :background my/bg-color
+                    :foreground "GreenYellow"
+                    :weight 'bold)
+(set-face-attribute 'whitespace-empty nil
+                    :background my/bg-color)
 
 ;; SKK
 (when (require 'skk-autoloads nil 'noerror)
@@ -137,15 +182,20 @@
   (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
          (cdb (concat large-jisyo ".cdb")))
     (if (file-exists-p cdb)
-	(setq skk-cdb-large-jisyo cdb)
-      (setq skk-large-jisyo large-jisyo))))
+        (setq skk-cdb-large-jisyo cdb)
+      (defvar skk-large-jisyo large-jisyo))))
 
 ;; coffee-script mode
 (autoload 'coffee-mode "coffee-mode" nil t)
+
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 
-(custom-set-variables '(coffee-tab-width 2))
+(eval-after-load "coffee-mode"
+  '(add-hook 'coffee-mode-hook
+             #'(lambda ()
+                 (and (set (make-local-variable 'tab-width) 2)
+                      (set (make-local-variable 'coffee-tab-width) 2)))))
 
 ;; js3-mode
 (autoload 'js3-mode "js3-mode" nil t)
@@ -173,6 +223,7 @@
   (server-start))
 
 (put 'narrow-to-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -191,4 +242,3 @@
 ;;; coding: utf-8-unix
 ;;; mode: emacs-lisp
 ;;; End:
-(put 'upcase-region 'disabled nil)
