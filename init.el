@@ -118,16 +118,12 @@
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
-(if (locate-library "solarized-dark-theme")
-    (require 'solarized-dark-theme))
-
-(when (locate-library "color-theme-twilight")
-  (require 'color-theme)
-  (eval-after-load "color-theme"
-    '(progn
-       (color-theme-initialize)
-       (require 'color-theme-twilight)
-       (color-theme-twilight))))
+(unless (require 'solarized-dark-theme nil 'noerror)
+  (when (locate-library "color-theme-twilight")
+    (require 'color-theme)
+    (color-theme-initialize)
+    (require 'color-theme-twilight)
+    (color-theme-twilight)))
 
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
@@ -204,8 +200,7 @@
 ;; yaml-mode
 ;; https://github.com/yoshiki/yaml-mode
 (autoload 'yaml-mode "yaml-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 
 ;; scala-mode
 (require 'scala-mode-auto nil 'noerror)
