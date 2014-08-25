@@ -87,6 +87,9 @@
 
 (define-key-after menu-bar-file-menu [kill-all-buffer] '("Close all" . close-all-buffers) 'kill-buffer)
 
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+(load custom-file t)
+
 ;;; 新規フレームのデフォルト設定
 (if (boundp 'window-system)
     (setq default-frame-alist
@@ -95,26 +98,8 @@
              (height              . 50))	; フレーム高(文字数)
            default-frame-alist)))
 
-;; setup package.el
-(when (require 'package nil 'noerror)
-  (setq package-user-dir "~/.emacs.d/elisp/elpa")
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (package-initialize))
-
-(add-to-list 'load-path "~/.emacs.d/elisp/el-get/el-get")
-(setq el-get-dir "~/.emacs.d/elisp/el-get/")
-(setq el-get-generate-autoloads nil)
-
-(unless (or (eq system-type 'windows-nt)
-            (require 'el-get nil 'noerror))
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-;(el-get 'sync)
+(if (require 'cask "~/.cask/cask.el" 'noerror)
+    (cask-initialize))
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
@@ -181,29 +166,52 @@
         (setq skk-cdb-large-jisyo cdb)
       (defvar skk-large-jisyo large-jisyo))))
 
+;; auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
+(set-face-background 'popup-tip-face "darkgray")
+(set-face-background 'ac-candidate-face "darkgray")
+
+;; slime
+(require 'slime-autoloads)
+(setq inferior-lisp-program "sbcl")
+(setq slime-contribs '(slime-fancy slime-banner slime-indentation))
+(setq slime-net-coding-system 'utf-8-unix)
+(eval-after-load "slime"
+  '(progn
+     (require 'ac-slime)
+     (add-hook 'slime-mode-hook 'set-up-slime-ac)
+     (add-hook 'slime-mode-hook
+               (function (lambda ()
+                           (set-variable lisp-indent-function 'common-lisp-indent-function)
+                           (local-set-key (kbd "RET") 'newline-and-indent))))
+     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
+
+;; popwin
+(require 'popwin)
+;; Apropos
+(push '("*slime-apropos*") popwin:special-display-config)
+;; Macroexpand
+(push '("*slime-macroexpansion*") popwin:special-display-config)
+;; Help
+(push '("*slime-description*") popwin:special-display-config)
+;; Compilation
+(push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+;; Cross-reference
+(push '("*slime-xref*") popwin:special-display-config)
+;; Debugger
+(push '(sldb-mode :stick t) popwin:special-display-config)
+;; REPL
+(push '(slime-repl-mode) popwin:special-display-config)
+;; Connections
+(push '(slime-connection-list-mode) popwin:special-display-config)
+
 ;; coffee-script mode
-(autoload 'coffee-mode "coffee-mode" nil t)
-
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-
 (eval-after-load "coffee-mode"
   '(add-hook 'coffee-mode-hook
              #'(lambda ()
                  (and (set (make-local-variable 'tab-width) 2)
                       (set (make-local-variable 'coffee-tab-width) 2)))))
-
-;; js3-mode
-(autoload 'js3-mode "js3-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.\\(js\\|json\\)$" . js3-mode))
-
-;; yaml-mode
-;; https://github.com/yoshiki/yaml-mode
-(autoload 'yaml-mode "yaml-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-
-;; scala-mode
-(require 'scala-mode-auto nil 'noerror)
 
 ;; auto-compile-mode
 ;; http://emacswiki.org/emacs/AutoRecompile
@@ -219,19 +227,6 @@
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;;; Local Variables:
 ;;; coding: utf-8-unix
