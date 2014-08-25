@@ -99,7 +99,14 @@
            default-frame-alist)))
 
 (if (require 'cask "~/.cask/cask.el" 'noerror)
-    (cask-initialize))
+    (cask-initialize)
+  (progn
+    ;; setup package.el
+    (when (require 'package nil 'noerror)
+      (setq package-user-dir "~/.emacs.d/elisp/elpa")
+      (add-to-list 'package-archives
+                   '("melpa" . "http://melpa.milkbox.net/packages/") t)
+      (package-initialize))))
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
@@ -167,44 +174,44 @@
       (defvar skk-large-jisyo large-jisyo))))
 
 ;; auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
-(set-face-background 'popup-tip-face "darkgray")
-(set-face-background 'ac-candidate-face "darkgray")
+(when (require 'auto-complete-config nil 'noerror)
+  (ac-config-default)
+  (set-face-background 'popup-tip-face "darkgray")
+  (set-face-background 'ac-candidate-face "darkgray"))
 
 ;; slime
-(require 'slime-autoloads)
-(setq inferior-lisp-program "sbcl")
-(setq slime-contribs '(slime-fancy slime-banner slime-indentation))
-(setq slime-net-coding-system 'utf-8-unix)
-(eval-after-load "slime"
-  '(progn
-     (require 'ac-slime)
-     (add-hook 'slime-mode-hook 'set-up-slime-ac)
-     (add-hook 'slime-mode-hook
-               (function (lambda ()
-                           (set-variable lisp-indent-function 'common-lisp-indent-function)
-                           (local-set-key (kbd "RET") 'newline-and-indent))))
-     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
+(when (require 'slime-autoloads nil 'noerror)
+  (setq inferior-lisp-program "sbcl")
+  (setq slime-contribs '(slime-fancy slime-banner slime-indentation))
+  (setq slime-net-coding-system 'utf-8-unix)
+  (eval-after-load "slime"
+    '(progn
+       (require 'ac-slime)
+       (add-hook 'slime-mode-hook 'set-up-slime-ac)
+       (add-hook 'slime-mode-hook
+                 (function (lambda ()
+                             (set-variable lisp-indent-function 'common-lisp-indent-function)
+                             (local-set-key (kbd "RET") 'newline-and-indent))))
+       (add-hook 'slime-repl-mode-hook 'set-up-slime-ac))))
 
 ;; popwin
-(require 'popwin)
-;; Apropos
-(push '("*slime-apropos*") popwin:special-display-config)
-;; Macroexpand
-(push '("*slime-macroexpansion*") popwin:special-display-config)
-;; Help
-(push '("*slime-description*") popwin:special-display-config)
-;; Compilation
-(push '("*slime-compilation*" :noselect t) popwin:special-display-config)
-;; Cross-reference
-(push '("*slime-xref*") popwin:special-display-config)
-;; Debugger
-(push '(sldb-mode :stick t) popwin:special-display-config)
-;; REPL
-(push '(slime-repl-mode) popwin:special-display-config)
-;; Connections
-(push '(slime-connection-list-mode) popwin:special-display-config)
+(when (require 'popwin nil 'noerror)
+  ;; Apropos
+  (push '("*slime-apropos*") popwin:special-display-config)
+  ;; Macroexpand
+  (push '("*slime-macroexpansion*") popwin:special-display-config)
+  ;; Help
+  (push '("*slime-description*") popwin:special-display-config)
+  ;; Compilation
+  (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+  ;; Cross-reference
+  (push '("*slime-xref*") popwin:special-display-config)
+  ;; Debugger
+  (push '(sldb-mode :stick t) popwin:special-display-config)
+  ;; REPL
+  (push '(slime-repl-mode) popwin:special-display-config)
+  ;; Connections
+  (push '(slime-connection-list-mode) popwin:special-display-config))
 
 ;; coffee-script mode
 (eval-after-load "coffee-mode"
