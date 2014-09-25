@@ -173,7 +173,8 @@
 (when (require 'auto-complete-config nil 'noerror)
   (ac-config-default)
   (set-face-background 'popup-tip-face "darkgray")
-  (set-face-background 'ac-candidate-face "darkgray"))
+  (set-face-background 'ac-candidate-face "darkgray")
+  (add-to-list 'ac-modes 'coffee-mode))
 
 ;; slime
 (when (require 'slime-autoloads nil 'noerror)
