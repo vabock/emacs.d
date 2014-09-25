@@ -111,11 +111,7 @@
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
 (unless (require 'solarized-dark-theme nil 'noerror)
-  (when (locate-library "color-theme-twilight")
-    (require 'color-theme)
-    (color-theme-initialize)
-    (require 'color-theme-twilight)
-    (color-theme-twilight)))
+  (require 'twilight-theme))
 
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
