@@ -58,16 +58,17 @@
           'japanese-cp932-dos
         'utf-8-unix))
 
+;; macの場合
+(when (or (eq system-type 'darwin)
+          (eq window-system 'ns))
+  (require 'ucs-normalize)
+  (setq file-name-coding-system 'utf-8-hfs)
+  (setq locale-coding-system 'utf-8-hfs)
+  (load (expand-file-name "~/.emacs.d/init-mac")))
+
 ;; Win32用設定読み込み
 (if (eq window-system 'w32)
     (load (expand-file-name "~/.emacs.d/init-w32")))
-
-;; NTEmacs以外の場合
-(unless (eq system-type 'windows-nt)
-  (set-default-coding-systems 'utf-8)
-  (set-buffer-file-coding-system 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8))
 
 (define-key key-translation-map (kbd "C-h") (kbd "DEL"))
 ;(keyboard-translate ?\C-h ?\C-?)
@@ -98,7 +99,10 @@
              (height              . 50))	; フレーム高(文字数)
            default-frame-alist)))
 
-(if (require 'cask "~/.cask/cask.el" 'noerror)
+(if (let ((cask-el "~/.cask/cask.el"))
+      (or (and (file-exists-p cask-el)
+               (require 'cask cask-el))
+          (require 'cask nil 'noerror)))
     (cask-initialize)
   (progn
     ;; setup package.el
@@ -157,17 +161,35 @@
 (set-face-attribute 'whitespace-empty nil
                     :background my/bg-color)
 
+(setq dropbox-path
+      (cond
+       ((eq system-type 'windows-nt)
+        (concat (getenv "USERPROFILE") "/Documents/My Dropbox"))
+       ((eq system-type 'darwin)
+        (expand-file-name "~/Dropbox"))
+       (t nil)))
+
 ;; SKK
 (when (require 'skk-autoloads nil 'noerror)
   (global-set-key "\C-x\C-j" 'skk-mode)
   (global-set-key "\C-xj" 'skk-auto-fill-mode)
   (global-set-key "\C-xt" 'skk-tutorial)
 
-  (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
-         (cdb (concat large-jisyo ".cdb")))
-    (if (file-exists-p cdb)
-        (setq skk-cdb-large-jisyo cdb)
-      (defvar skk-large-jisyo large-jisyo))))
+  ;; Macの場合はAquaSKK内蔵のskkservを使う
+  (when (eq window-system 'ns)
+    (setq skk-server-host "127.0.0.1")
+    (setq skk-server-portnum 1178))
+
+  (setq skk-jisyo-code 'utf-8)
+  (when dropbox-path
+    (setq skk-jisyo (concat dropbox-path "/skk-jisyo.utf8")))
+
+  (unless (boundp 'skk-server-host)
+    (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
+           (cdb (concat large-jisyo ".cdb")))
+      (if (file-exists-p cdb)
+          (setq skk-cdb-large-jisyo cdb)
+        (defvar skk-large-jisyo large-jisyo)))))
 
 ;; auto-complete
 (when (require 'auto-complete-config nil 'noerror)
