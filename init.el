@@ -51,7 +51,7 @@
 (show-paren-mode 1)
 (setq show-paren-style 'mixed)
 
-(set-language-environment "japanese")
+;(set-language-environment "japanese")
 (prefer-coding-system 'utf-8-unix)
 (setq default-file-name-coding-system
       (if (eq window-system 'w32)
@@ -103,7 +103,9 @@
       (or (and (file-exists-p cask-el)
                (require 'cask cask-el))
           (require 'cask nil 'noerror)))
-    (cask-initialize)
+    (progn
+      (cask-initialize)
+      (require 'pallet))
   (progn
     ;; setup package.el
     (when (require 'package nil 'noerror)
@@ -140,7 +142,7 @@
 (setq whitespace-space-regexp "\\(\u3000+\\)")
 
 ;; 保存前に自動でクリーンアップ
-(setq whitespace-action '(auto-cleanup))
+;(setq whitespace-action '(auto-cleanup))
 ;(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
 
 (global-whitespace-mode 1)
@@ -160,6 +162,13 @@
                     :weight 'bold)
 (set-face-attribute 'whitespace-empty nil
                     :background my/bg-color)
+
+;; ag
+(setq ag-highlight-search t)
+(setq ag-reuse-buffers t)
+
+;; editorconfig
+(setq edconf-exec-path "/usr/local/bin/editorconfig")
 
 (setq dropbox-path
       (cond

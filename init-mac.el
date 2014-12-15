@@ -1,3 +1,5 @@
+(setenv "PATH" (concat  "/usr/local/bin:" (getenv "PATH")))
+
 ;; (let* ((size 16)
 ;;        (asciifont "Ricty") ; ASCII fonts
 ;;        (jpfont "Ricty") ; Japanese fonts

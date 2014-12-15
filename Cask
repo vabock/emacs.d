@@ -12,3 +12,5 @@
 (depends-on "yaml-mode")
 (depends-on "auto-complete")
 (depends-on "ac-slime")
+(depends-on "ag")
+(depends-on "editorconfig")
