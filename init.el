@@ -53,22 +53,18 @@
 
 ;(set-language-environment "japanese")
 (prefer-coding-system 'utf-8-unix)
-(setq default-file-name-coding-system
-      (if (eq window-system 'w32)
-          'japanese-cp932-dos
-        'utf-8-unix))
-
-;; macの場合
-(when (or (eq system-type 'darwin)
-          (eq window-system 'ns))
+(setq default-buffer-file-coding-system 'utf-8-unix)
+(cond
+ ((eq system-type 'windows-nt)
+  (set-file-name-coding-system 'japanese-cp932)
+  (load (expand-file-name "~/.emacs.d/init-w32")))
+ ((eq system-type 'darwin)
   (require 'ucs-normalize)
-  (setq file-name-coding-system 'utf-8-hfs)
+  (set-file-name-coding-system 'utf-8-hfs)
   (setq locale-coding-system 'utf-8-hfs)
   (load (expand-file-name "~/.emacs.d/init-mac")))
-
-;; Win32用設定読み込み
-(if (eq window-system 'w32)
-    (load (expand-file-name "~/.emacs.d/init-w32")))
+ (t
+  (set-file-name-coding-system 'utf-8)))
 
 (define-key key-translation-map (kbd "C-h") (kbd "DEL"))
 ;(keyboard-translate ?\C-h ?\C-?)
