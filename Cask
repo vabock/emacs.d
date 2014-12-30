@@ -3,6 +3,7 @@
 
 (depends-on "pallet")
 
+(depends-on "use-package")
 (depends-on "magit")
 (depends-on "auto-compile")
 (depends-on "js3-mode")

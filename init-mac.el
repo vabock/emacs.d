@@ -1,4 +1,6 @@
-(setenv "PATH" (concat  "/usr/local/bin:" (getenv "PATH")))
+(let ((local "/usr/local/bin"))
+  (setenv "PATH" (concat local ":" (getenv "PATH")))
+  (setq exec-path (cons local exec-path)))
 
 ;; (let* ((size 16)
 ;;        (asciifont "Ricty") ; ASCII fonts

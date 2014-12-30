@@ -53,7 +53,7 @@
 
 ;(set-language-environment "japanese")
 (prefer-coding-system 'utf-8-unix)
-(setq default-buffer-file-coding-system 'utf-8-unix)
+(setq-default buffer-file-coding-system 'utf-8-unix)
 (cond
  ((eq system-type 'windows-nt)
   (set-file-name-coding-system 'japanese-cp932)
@@ -110,6 +110,10 @@
                    '("melpa" . "http://melpa.milkbox.net/packages/") t)
       (package-initialize))))
 
+(if (require 'use-package nil 'noerror)
+    (require 'bind-key)
+  (defmacro use-package (&rest args)))
+
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
 ;(load-theme ‘solarized-dark t)
 (unless (require 'solarized-dark-theme nil 'noerror)
@@ -159,12 +163,21 @@
 (set-face-attribute 'whitespace-empty nil
                     :background my/bg-color)
 
-;; ag
-(setq ag-highlight-search t)
-(setq ag-reuse-buffers t)
+;; git-commit-mode
+(use-package git-commit-mode
+  :defer t
+  :config
+  (defun set-commit-log-encoding ()
+    (if (string-match "COMMIT_EDITMSG" buffer-file-name)
+        (set-buffer-file-coding-system 'utf-8-unix)))
+  (add-hook 'git-commit-mode-hook 'set-commit-log-encoding))
 
-;; editorconfig
-(setq edconf-exec-path "/usr/local/bin/editorconfig")
+;; ag
+(use-package ag
+  :defer t
+  :config
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers t))
 
 (setq dropbox-path
       (cond
@@ -175,18 +188,19 @@
        (t nil)))
 
 ;; SKK
-(when (require 'skk-autoloads nil 'noerror)
-  (global-set-key "\C-x\C-j" 'skk-mode)
-  (global-set-key "\C-xj" 'skk-auto-fill-mode)
-  (global-set-key "\C-xt" 'skk-tutorial)
-
+(use-package skk-autoloads
+  :init (bind-keys*
+         ("C-x C-j" . skk-mode)
+         ("C-x j" . skk-auto-fill-mode)
+         ("C-x t" . skk-tutorial))
+  :config
   ;; Macの場合はAquaSKK内蔵のskkservを使う
   (when (eq window-system 'ns)
     (setq skk-server-host "127.0.0.1")
     (setq skk-server-portnum 1178))
 
-  (setq skk-jisyo-code 'utf-8)
-  (when dropbox-path
+  (setq skk-jisyo-code 'utf-8-unix)
+  (if dropbox-path
     (setq skk-jisyo (concat dropbox-path "/skk-jisyo.utf8")))
 
   (unless (boundp 'skk-server-host)
@@ -245,9 +259,6 @@
                       (set (make-local-variable 'coffee-tab-width) 2)))))
 
 ;; auto-compile-mode
-;; http://emacswiki.org/emacs/AutoRecompile
-;; https://github.com/tarsius/auto-compile
-;(autoload 'auto-compile-mode "auto-compile" nil t)
 (when (require 'auto-compile nil 'noerror)
 ;  (auto-compile-on-load-mode 1)
   (auto-compile-on-save-mode 1))
@@ -258,6 +269,7 @@
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
 
 ;;; Local Variables:
 ;;; coding: utf-8-unix
