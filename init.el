@@ -119,6 +119,16 @@
 (unless (require 'solarized-dark-theme nil 'noerror)
   (require 'twilight-theme))
 
+;; flycheck
+(use-package flycheck
+  :defer t
+  :if (fboundp 'global-flycheck-mode)
+  :init
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :config
+  (custom-set-variables
+   '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
                          trailing       ; 行末
@@ -126,7 +136,7 @@
                          spaces         ; スペース
                          empty          ; 先頭/末尾の空行
                          space-mark     ; 表示のマッピング
-                         tab-mark
+;;                         tab-mark
                          ))
 
 (setq whitespace-display-mappings
@@ -168,7 +178,7 @@
   :defer t
   :config
   (defun set-commit-log-encoding ()
-    (if (string-match "COMMIT_EDITMSG" buffer-file-name)
+    (if (string-match-p "^undecided" (symbol-name buffer-file-coding-system))
         (set-buffer-file-coding-system 'utf-8-unix)))
   (add-hook 'git-commit-mode-hook 'set-commit-log-encoding))
 
@@ -213,6 +223,7 @@
 ;; auto-complete
 (when (require 'auto-complete-config nil 'noerror)
   (ac-config-default)
+  (set-face-foreground 'popup-tip-face "black")
   (set-face-background 'popup-tip-face "darkgray")
   (set-face-background 'ac-candidate-face "darkgray")
   (add-to-list 'ac-modes 'coffee-mode))
