@@ -214,12 +214,35 @@
        (t nil)))
 
 ;; SKK
-(use-package skk-autoloads
-  :init (bind-keys*
-         ("C-x C-j" . skk-mode)
-         ("C-x j" . skk-auto-fill-mode)
-         ("C-x t" . skk-tutorial))
-  :config
+(use-package skk-mode
+  :defer t
+  :init
+  ;; from skk-setup
+  ;; Isearch setting.
+  (defun skk-isearch-setup-maybe ()
+    (require 'skk-vars)
+    (when (or (eq skk-isearch-mode-enable 'always)
+              (and (boundp 'skk-mode)
+                   skk-mode
+                   skk-isearch-mode-enable))
+      (skk-isearch-mode-setup)))
+
+  (defun skk-isearch-cleanup-maybe ()
+    (require 'skk-vars)
+    (when (and (featurep 'skk-isearch)
+               skk-isearch-mode-enable)
+      (skk-isearch-mode-cleanup)))
+
+  (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
+  (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe)
+  ;;
+  (bind-keys*
+   ("C-x C-j" . skk-mode)
+   ("C-x j" . skk-auto-fill-mode))
+   ;;("C-x t" . skk-tutorial)
+
+  (setq skk-isearch-mode-enable t)
+
   ;; Macの場合はAquaSKK内蔵のskkservを使う
   (when (eq window-system 'ns)
     (setq skk-server-host "127.0.0.1")
@@ -227,7 +250,7 @@
 
   (setq skk-jisyo-code 'utf-8-unix)
   (if dropbox-path
-    (setq skk-jisyo (concat dropbox-path "/skk-jisyo.utf8")))
+      (setq skk-jisyo (concat dropbox-path "/skk-jisyo.utf8")))
 
   (unless (boundp 'skk-server-host)
     (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
@@ -286,8 +309,9 @@
                       (set (make-local-variable 'coffee-tab-width) 2)))))
 
 ;; auto-compile-mode
-(when (require 'auto-compile nil 'noerror)
-;  (auto-compile-on-load-mode 1)
+(use-package auto-compile
+  :defer t
+  :init
   (auto-compile-on-save-mode 1))
 
 (require 'server)

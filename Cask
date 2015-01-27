@@ -17,3 +17,4 @@
 (depends-on "editorconfig")
 (depends-on "flycheck")
 (depends-on "flycheck-pos-tip")
+(depends-on "ddskk")
