@@ -125,23 +125,24 @@
   :if (fboundp 'global-flycheck-mode)
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
-  (defun flycheck-cc-mode-key-binding-setup ()
-    (bind-keys :map c-mode-base-map
-               ("C-c C-n" . flycheck-next-error)
-               ("C-c C-p" . flycheck-previous-error)))
-  (add-hook 'c-initialization-hook #'flycheck-cc-mode-key-binding-setup)
   :config
   (defun flycheck-cc-mode-checker-setup ()
-    (if (derived-mode-p 'c-mode 'c++-mode)
-        (cond
-         ((eq system-type 'darwin)
-          (flycheck-select-checker 'c/c++-cppcheck))
-          ;; (setq flycheck-clang-include-path
-          ;;       (list "/usr/local/Cellar/wxmac/3.0.2/lib/wx/include/osx_cocoa-unicode-3.0"
-          ;;             "/usr/local/Cellar/wxmac/3.0.2/include/wx-3.0"))
-         (t
-          nil))))
+    (cond
+     ((derived-mode-p 'c-mode 'c++-mode)
+      (cond
+       ((eq system-type 'darwin)
+        (flycheck-select-checker 'c/c++-cppcheck))
+       ;; (setq flycheck-clang-include-path
+       ;;       (list "/usr/local/Cellar/wxmac/3.0.2/lib/wx/include/osx_cocoa-unicode-3.0"
+       ;;             "/usr/local/Cellar/wxmac/3.0.2/include/wx-3.0"))
+       (t
+        nil)))
+     ((derived-mode-p 'python-mode)
+      (flycheck-select-checker 'python-pylint))))
   (add-hook 'flycheck-before-syntax-check-hook #'flycheck-cc-mode-checker-setup)
+  (bind-keys*
+   ("C-c C-n" . flycheck-next-error)
+   ("C-c C-p" . flycheck-previous-error))
   (custom-set-variables
    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
 
@@ -214,7 +215,7 @@
        (t nil)))
 
 ;; SKK
-(use-package skk-mode
+(use-package skk
   :defer t
   :init
   ;; from skk-setup

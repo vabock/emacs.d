@@ -18,3 +18,4 @@
 (depends-on "flycheck")
 (depends-on "flycheck-pos-tip")
 (depends-on "ddskk")
+(depends-on "whitespace-cleanup-mode")
