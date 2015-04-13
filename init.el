@@ -87,13 +87,19 @@
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 (load custom-file t)
 
+(defmacro append-to-list (to lst)
+  `(setq ,to (append ,lst ,to)))
+
 ;;; 新規フレームのデフォルト設定
-(if (boundp 'window-system)
-    (setq default-frame-alist
-          (append
-           '((width               . 120)	; フレーム幅(文字数)
-             (height              . 50))	; フレーム高(文字数)
-           default-frame-alist)))
+(when (boundp 'window-system)
+  (append-to-list default-frame-alist
+                  '((width               . 120)	; フレーム幅(文字数)
+                    (height              . 50))	; フレーム高(文字数)
+                  )
+  (if (eq window-system 'mac)
+      (append-to-list default-frame-alist
+                      '((top  . 0)
+                        (left . 0)))))
 
 (if (let ((cask-el "~/.cask/cask.el"))
       (or (and (file-exists-p cask-el)
@@ -245,7 +251,7 @@
   (setq skk-isearch-mode-enable t)
 
   ;; Macの場合はAquaSKK内蔵のskkservを使う
-  (when (eq window-system 'ns)
+  (when (eq window-system 'mac)
     (setq skk-server-host "127.0.0.1")
     (setq skk-server-portnum 1178))
 
