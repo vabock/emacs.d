@@ -19,3 +19,4 @@
 (depends-on "flycheck-pos-tip")
 (depends-on "ddskk")
 (depends-on "whitespace-cleanup-mode")
+(depends-on "groovy-mode")
