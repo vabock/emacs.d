@@ -20,3 +20,4 @@
 (depends-on "ddskk")
 (depends-on "whitespace-cleanup-mode")
 (depends-on "groovy-mode")
+(depends-on "markdown-mode")
