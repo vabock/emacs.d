@@ -322,6 +322,14 @@
   :init
   (auto-compile-on-save-mode 1))
 
+(use-package editorconfig
+  :defer t
+  :commands editorconfig-mode
+  :init
+  (add-hook 'after-init-hook #'editorconfig-mode)
+  (custom-set-variables '(editorconfig-get-properties-function
+                          'editorconfig-core-get-properties-hash)))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))

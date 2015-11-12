@@ -15,6 +15,7 @@
 (depends-on "ac-slime")
 (depends-on "ag")
 (depends-on "editorconfig")
+(depends-on "editorconfig-core")
 (depends-on "flycheck")
 (depends-on "flycheck-pos-tip")
 (depends-on "ddskk")
