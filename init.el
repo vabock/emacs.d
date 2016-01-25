@@ -305,11 +305,10 @@
   (push '(slime-connection-list-mode) popwin:special-display-config))
 
 ;; coffee-script mode
-(eval-after-load "coffee-mode"
-  '(add-hook 'coffee-mode-hook
-             #'(lambda ()
-                 (and (set (make-local-variable 'tab-width) 2)
-                      (set (make-local-variable 'coffee-tab-width) 2)))))
+(use-package coffee-mode
+  :defer t
+  :config
+  (custom-set-variables '(coffee-tab-width 2)))
 
 ;; auto-compile-mode
 (use-package auto-compile
