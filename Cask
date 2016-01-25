@@ -11,8 +11,6 @@
 (depends-on "popwin")
 (depends-on "slime")
 (depends-on "yaml-mode")
-(depends-on "auto-complete")
-(depends-on "ac-slime")
 (depends-on "ag")
 (depends-on "editorconfig")
 (depends-on "flycheck")
@@ -21,3 +19,4 @@
 (depends-on "whitespace-cleanup-mode")
 (depends-on "groovy-mode")
 (depends-on "markdown-mode")
+(depends-on "company")

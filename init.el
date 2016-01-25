@@ -126,6 +126,13 @@
 (unless (require 'solarized-dark-theme nil 'noerror)
   (require 'twilight-theme))
 
+;; company-mode
+(use-package company
+  :defer t
+  :if (fboundp 'global-company-mode)
+  :init
+  (add-hook 'after-init-hook #'global-company-mode))
+
 ;; flycheck
 (use-package flycheck
   :defer t
@@ -267,14 +274,6 @@
           (setq skk-cdb-large-jisyo cdb)
         (defvar skk-large-jisyo large-jisyo)))))
 
-;; auto-complete
-(when (require 'auto-complete-config nil 'noerror)
-  (ac-config-default)
-  (set-face-foreground 'popup-tip-face "black")
-  (set-face-background 'popup-tip-face "darkgray")
-  (set-face-background 'ac-candidate-face "darkgray")
-  (add-to-list 'ac-modes 'coffee-mode))
-
 ;; slime
 (when (require 'slime-autoloads nil 'noerror)
   (setq inferior-lisp-program "sbcl")
@@ -282,13 +281,10 @@
   (setq slime-net-coding-system 'utf-8-unix)
   (eval-after-load "slime"
     '(progn
-       (require 'ac-slime)
-       (add-hook 'slime-mode-hook 'set-up-slime-ac)
        (add-hook 'slime-mode-hook
                  (function (lambda ()
                              (set-variable lisp-indent-function 'common-lisp-indent-function)
-                             (local-set-key (kbd "RET") 'newline-and-indent))))
-       (add-hook 'slime-repl-mode-hook 'set-up-slime-ac))))
+                             (local-set-key (kbd "RET") 'newline-and-indent)))))))
 
 ;; popwin
 (when (require 'popwin nil 'noerror)
