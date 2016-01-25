@@ -157,8 +157,7 @@
   (bind-keys*
    ("C-c C-n" . flycheck-next-error)
    ("C-c C-p" . flycheck-previous-error))
-  (custom-set-variables
-   '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+  (flycheck-pos-tip-mode))
 
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
