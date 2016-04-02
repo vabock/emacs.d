@@ -1,4 +1,5 @@
 (setq inhibit-splash-screen t)
+(setq load-prefer-newer t)
 
 (let ((default-directory (expand-file-name "~/.emacs.d/elisp")))
   (when (file-accessible-directory-p default-directory)
@@ -86,7 +87,7 @@
 (define-key-after menu-bar-file-menu [kill-all-buffer] '("Close all" . close-all-buffers) 'kill-buffer)
 
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
-(load custom-file t)
+(load (file-name-sans-extension custom-file) t)
 
 (defmacro append-to-list (to lst)
   `(setq ,to (append ,lst ,to)))
@@ -317,7 +318,7 @@
 (use-package auto-compile
   :defer t
   :init
-  (auto-compile-on-save-mode 1))
+  (add-hook 'after-init-hook #'auto-compile-on-save-mode))
 
 (use-package editorconfig
   :defer t
