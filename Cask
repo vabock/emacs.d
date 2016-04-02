@@ -14,7 +14,7 @@
 (depends-on "ag")
 (depends-on "editorconfig")
 (depends-on "flycheck")
-(depends-on "flycheck-pos-tip")
+(depends-on "flycheck-tip")
 (depends-on "ddskk")
 (depends-on "whitespace-cleanup-mode")
 (depends-on "groovy-mode")

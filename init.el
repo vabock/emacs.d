@@ -136,6 +136,7 @@
 ;; flycheck
 (use-package flycheck
   :defer t
+  :commands global-flycheck-mode
   :if (fboundp 'global-flycheck-mode)
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -157,7 +158,8 @@
   (bind-keys*
    ("C-c C-n" . flycheck-next-error)
    ("C-c C-p" . flycheck-previous-error))
-  (flycheck-pos-tip-mode))
+  (require 'flycheck-tip)
+  (flycheck-tip-use-timer 'verbose))
 
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
