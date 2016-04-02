@@ -206,13 +206,14 @@
                     :background my/bg-color)
 
 ;; git-commit-mode
-(use-package git-commit-mode
+(use-package git-commit
   :defer t
-  :config
+  :init
   (defun set-commit-log-encoding ()
     (if (string-match-p "^undecided" (symbol-name buffer-file-coding-system))
         (set-buffer-file-coding-system 'utf-8-unix)))
-  (add-hook 'git-commit-mode-hook 'set-commit-log-encoding))
+  (add-hook 'git-commit-setup-hook #'set-commit-log-encoding)
+  (add-hook 'after-init-hook #'global-git-commit-mode))
 
 ;; ag
 (use-package ag
