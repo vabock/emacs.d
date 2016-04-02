@@ -326,9 +326,7 @@
   :defer t
   :commands editorconfig-mode
   :init
-  (add-hook 'after-init-hook #'editorconfig-mode)
-  (custom-set-variables '(editorconfig-get-properties-function
-                          'editorconfig-core-get-properties-hash)))
+  (add-hook 'after-init-hook #'editorconfig-mode))
 
 (require 'server)
 (unless (server-running-p)
