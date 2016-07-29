@@ -139,7 +139,6 @@
 ;; flycheck
 (use-package flycheck
   :defer t
-  :commands global-flycheck-mode
   :if (fboundp 'global-flycheck-mode)
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -332,7 +331,6 @@
 
 (use-package editorconfig
   :defer t
-  :commands editorconfig-mode
   :init
   (add-hook 'after-init-hook #'editorconfig-mode))
 
