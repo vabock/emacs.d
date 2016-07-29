@@ -132,7 +132,9 @@
   :defer t
   :if (fboundp 'global-company-mode)
   :init
-  (add-hook 'after-init-hook #'global-company-mode))
+  (add-hook 'after-init-hook #'global-company-mode)
+  :config
+  (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
 
 ;; flycheck
 (use-package flycheck
