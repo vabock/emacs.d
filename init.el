@@ -162,6 +162,14 @@
   (require 'flycheck-tip)
   (flycheck-tip-use-timer 'verbose))
 
+
+(use-package typescript-mode
+  :defer t
+  :if (fboundp 'tide-setup)
+  :init
+  (add-hook 'typescript-mode-hook #'tide-setup)
+  (add-hook 'typescript-mode-hook #'eldoc-mode))
+
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
                          trailing       ; 行末

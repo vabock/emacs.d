@@ -20,3 +20,4 @@
 (depends-on "groovy-mode")
 (depends-on "markdown-mode")
 (depends-on "company")
+(depends-on "tide")
