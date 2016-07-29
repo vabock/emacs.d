@@ -232,13 +232,13 @@
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t))
 
-(setq dropbox-path
-      (cond
-       ((eq system-type 'windows-nt)
-        (concat (getenv "USERPROFILE") "/Documents/My Dropbox"))
-       ((eq system-type 'darwin)
-        (expand-file-name "~/Dropbox"))
-       (t nil)))
+(defvar dropbox-path
+  (cond
+   ((eq system-type 'windows-nt)
+    (concat (getenv "USERPROFILE") "/Documents/My Dropbox"))
+   ((eq system-type 'darwin)
+    (expand-file-name "~/Dropbox"))
+   (t nil)))
 
 ;; SKK
 (use-package skk
@@ -283,7 +283,7 @@
     (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
            (cdb (concat large-jisyo ".cdb")))
       (if (file-exists-p cdb)
-          (setq skk-cdb-large-jisyo cdb)
+          (defvar skk-cdb-large-jisyo cdb)
         (defvar skk-large-jisyo large-jisyo)))))
 
 ;; slime
