@@ -131,6 +131,7 @@
 (use-package company
   :defer t
   :if (fboundp 'global-company-mode)
+  :diminish company-mode
   :init
   (add-hook 'after-init-hook #'global-company-mode)
   :config
@@ -171,49 +172,55 @@
   (add-hook 'typescript-mode-hook #'tide-setup)
   (add-hook 'typescript-mode-hook #'eldoc-mode))
 
-(require 'whitespace)
-(setq whitespace-style '(face           ; faceで可視化
-                         trailing       ; 行末
-                         tabs           ; タブ
-                         spaces         ; スペース
-                         empty          ; 先頭/末尾の空行
-                         space-mark     ; 表示のマッピング
-;;                         tab-mark
-                         ))
+(use-package whitespace
+  :defer t
+  :diminish (whitespace-mode
+             global-whitespace-mode
+             whitespace-newline-mode)
+  :init
+  (add-hook 'after-init-hook #'global-whitespace-mode)
+  :config
+  (setq whitespace-style '(face           ; faceで可視化
+                           trailing       ; 行末
+                           tabs           ; タブ
+                           spaces         ; スペース
+                           empty          ; 先頭/末尾の空行
+                           space-mark     ; 表示のマッピング
+;;;                         tab-mark
+                           ))
 
-(setq whitespace-display-mappings
-      '((space-mark ?\u3000 [?\u25a1])
-        ;; WARNING: the mapping below has a problem.
-        ;; When a TAB occupies exactly one column, it will display the
-        ;; character ?\xBB at that column followed by a TAB which goes to
-        ;; the next TAB column.
-        ;; If this is a problem for you, please, comment the line below.
-        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+  (setq whitespace-display-mappings
+        '((space-mark ?\u3000 [?\u25a1])
+          ;; WARNING: the mapping below has a problem.
+          ;; When a TAB occupies exactly one column, it will display the
+          ;; character ?\xBB at that column followed by a TAB which goes to
+          ;; the next TAB column.
+          ;; If this is a problem for you, please, comment the line below.
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
 
-;; スペースは全角のみを可視化
-(setq whitespace-space-regexp "\\(\u3000+\\)")
+  ;; スペースは全角のみを可視化
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
 
-;; 保存前に自動でクリーンアップ
-;(setq whitespace-action '(auto-cleanup))
-;(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
+  ;; 保存前に自動でクリーンアップ
+  ;;(setq whitespace-action '(auto-cleanup))
+  ;;(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
 
-(global-whitespace-mode 1)
+  (defvar my/bg-color "#232323")
+  (set-face-attribute 'whitespace-trailing nil
+                      :background my/bg-color
+                      :foreground "DeepPink"
+                      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+                      :background my/bg-color
+                      :foreground "LightSkyBlue"
+                      :underline t)
+  (set-face-attribute 'whitespace-space nil
+                      :background my/bg-color
+                      :foreground "GreenYellow"
+                      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+                      :background my/bg-color))
 
-(defvar my/bg-color "#232323")
-(set-face-attribute 'whitespace-trailing nil
-                    :background my/bg-color
-                    :foreground "DeepPink"
-                    :underline t)
-(set-face-attribute 'whitespace-tab nil
-                    :background my/bg-color
-                    :foreground "LightSkyBlue"
-                    :underline t)
-(set-face-attribute 'whitespace-space nil
-                    :background my/bg-color
-                    :foreground "GreenYellow"
-                    :weight 'bold)
-(set-face-attribute 'whitespace-empty nil
-                    :background my/bg-color)
 
 ;; git-commit-mode
 (use-package git-commit
@@ -287,16 +294,18 @@
         (defvar skk-large-jisyo large-jisyo)))))
 
 ;; slime
-(when (require 'slime-autoloads nil 'noerror)
+(use-package slime
+  :defer t
+  :if (fboundp 'slime-mode)
+  :config
   (setq inferior-lisp-program "sbcl")
   (setq slime-contribs '(slime-fancy slime-banner slime-indentation))
   (setq slime-net-coding-system 'utf-8-unix)
-  (eval-after-load "slime"
-    '(progn
-       (add-hook 'slime-mode-hook
-                 (function (lambda ()
-                             (set-variable lisp-indent-function 'common-lisp-indent-function)
-                             (local-set-key (kbd "RET") 'newline-and-indent)))))))
+  (defun slime-mode-setup ()
+    (set-variable lisp-indent-function 'common-lisp-indent-function)
+    (local-set-key (kbd "RET") 'newline-and-indent))
+  (add-hook 'slime-mode-hook #'slime-mode-setup))
+
 
 ;; popwin
 (when (require 'popwin nil 'noerror)

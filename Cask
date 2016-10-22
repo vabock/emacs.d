@@ -16,7 +16,6 @@
 (depends-on "flycheck")
 (depends-on "flycheck-tip")
 (depends-on "ddskk")
-(depends-on "whitespace-cleanup-mode")
 (depends-on "groovy-mode")
 (depends-on "markdown-mode")
 (depends-on "company")
