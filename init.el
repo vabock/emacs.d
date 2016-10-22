@@ -141,6 +141,7 @@
 (use-package flycheck
   :defer t
   :if (fboundp 'global-flycheck-mode)
+  :functions (error-tip-delete-popup error-tip-popup-error-message)
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
   :config
@@ -161,8 +162,18 @@
   (bind-keys*
    ("C-c C-n" . flycheck-next-error)
    ("C-c C-p" . flycheck-previous-error))
-  (require 'flycheck-tip)
-  (flycheck-tip-use-timer 'verbose))
+
+  (flycheck-pos-tip-mode)
+
+  (when (and (not (display-graphic-p))
+             (require 'error-tip nil 'noerror))
+    (defun flycheck-pos-tip-tty-popup (errors)
+      (when errors
+        (error-tip-delete-popup)
+        (let ((msgs (mapcar #'flycheck-error-format-message-and-id errors)))
+          (error-tip-popup-error-message msgs))))
+    (custom-set-variables
+     '(flycheck-pos-tip-display-errors-tty-function #'flycheck-pos-tip-tty-popup))))
 
 
 (use-package typescript-mode
