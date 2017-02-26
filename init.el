@@ -80,9 +80,10 @@
 (setq vc-handled-backends nil)
 
 ;;; すべてのバッファを閉じるメニューアイテムを追加
+(require 'cl-lib)
 (defun close-all-buffers ()
   (interactive)
-  (mapc 'kill-buffer (buffer-list)))
+  (mapc 'kill-buffer (cl-remove-if (lambda (buf) (string-prefix-p "*" (buffer-name buf))) (buffer-list))))
 
 (define-key-after menu-bar-file-menu [kill-all-buffer] '("Close all" . close-all-buffers) 'kill-buffer)
 
