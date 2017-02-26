@@ -264,8 +264,10 @@
   :init
   ;; from skk-setup
   ;; Isearch setting.
+  (require 'skk-vars)
+  (custom-set-variables '(skk-isearch-mode-enable t))
+
   (defun skk-isearch-setup-maybe ()
-    (require 'skk-vars)
     (when (or (eq skk-isearch-mode-enable 'always)
               (and (boundp 'skk-mode)
                    skk-mode
@@ -273,7 +275,6 @@
       (skk-isearch-mode-setup)))
 
   (defun skk-isearch-cleanup-maybe ()
-    (require 'skk-vars)
     (when (and (featurep 'skk-isearch)
                skk-isearch-mode-enable)
       (skk-isearch-mode-cleanup)))
@@ -285,8 +286,6 @@
    ("C-x C-j" . skk-mode)
    ("C-x j" . skk-auto-fill-mode))
    ;;("C-x t" . skk-tutorial)
-
-  (setq skk-isearch-mode-enable t)
 
   ;; Macの場合はAquaSKK内蔵のskkservを使う
   (when (eq window-system 'mac)
