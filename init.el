@@ -160,9 +160,9 @@
      ((derived-mode-p 'python-mode)
       (flycheck-select-checker 'python-pylint))))
   (add-hook 'flycheck-before-syntax-check-hook #'flycheck-cc-mode-checker-setup)
-  (bind-keys*
-   ("C-c C-n" . flycheck-next-error)
-   ("C-c C-p" . flycheck-previous-error))
+  (bind-keys :map flycheck-mode-map
+             ("C-c C-n" . flycheck-next-error)
+             ("C-c C-p" . flycheck-previous-error))
 
   (flycheck-pos-tip-mode)
 
