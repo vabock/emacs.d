@@ -12,6 +12,8 @@
 (depends-on "slime")
 (depends-on "yaml-mode")
 (depends-on "ag")
+(depends-on "rg")
+(depends-on "wgrep")
 (depends-on "editorconfig")
 (depends-on "flycheck")
 (depends-on "flycheck-pos-tip")

@@ -355,6 +355,11 @@
   :init
   (add-hook 'after-init-hook #'editorconfig-mode))
 
+(use-package wgrep
+  :defer t
+  :config
+  (setq wgrep-auto-save-buffer t))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
