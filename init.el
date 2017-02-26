@@ -350,6 +350,7 @@
 
 (use-package editorconfig
   :defer t
+  :diminish editorconfig-mode
   :init
   (add-hook 'after-init-hook #'editorconfig-mode))
 
