@@ -239,6 +239,7 @@
 ;; git-commit-mode
 (use-package git-commit
   :defer t
+  :if (fboundp 'global-git-commit-mode)
   :init
   (defun set-commit-log-encoding ()
     (if (string-match-p "^undecided" (symbol-name buffer-file-coding-system))
@@ -348,11 +349,13 @@
 ;; auto-compile-mode
 (use-package auto-compile
   :defer t
+  :if (fboundp 'auto-compile-on-save-mode)
   :init
   (add-hook 'after-init-hook #'auto-compile-on-save-mode))
 
 (use-package editorconfig
   :defer t
+  :if (fboundp 'editorconfig-mode)
   :diminish editorconfig-mode
   :init
   (add-hook 'after-init-hook #'editorconfig-mode))
