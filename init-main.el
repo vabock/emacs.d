@@ -102,7 +102,24 @@
   :config
   (unless (eq system-type 'darwin)
     (delete 'company-clang 'company-backends))
-  (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
+  
+  (defun my/company-visible-and-explicit-action-p ()
+    (and (company-tooltip-visible-p)
+         (company-explicit-action-p)))
+
+  (defun my/company-ac-setup ()
+    "Sets up `company-mode' to behave similarly to `auto-complete-mode'."
+    (setq company-require-match nil)
+    (setq company-auto-complete #'my/company-visible-and-explicit-action-p)
+    (setq company-frontends '(company-echo-metadata-frontend
+                              company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                              company-preview-frontend))
+
+    (bind-keys :map company-active-map
+               ("<tab>" . company-complete-common-or-cycle)
+               ("S-TAB" . company-select-previous)))
+
+  (my/company-ac-setup))
 
 ;; flycheck
 (use-package flycheck
