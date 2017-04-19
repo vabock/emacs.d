@@ -271,26 +271,8 @@
 (use-package skk
   :defer t
   :init
-  ;; from skk-setup
-  ;; Isearch setting.
-  (require 'skk-vars)
   (custom-set-variables '(skk-isearch-mode-enable t))
 
-  (defun skk-isearch-setup-maybe ()
-    (when (or (eq skk-isearch-mode-enable 'always)
-              (and (boundp 'skk-mode)
-                   skk-mode
-                   skk-isearch-mode-enable))
-      (skk-isearch-mode-setup)))
-
-  (defun skk-isearch-cleanup-maybe ()
-    (when (and (featurep 'skk-isearch)
-               skk-isearch-mode-enable)
-      (skk-isearch-mode-cleanup)))
-
-  (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
-  (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe)
-  ;;
   (bind-keys*
    ("C-x C-j" . skk-mode)
    ("C-x j" . skk-auto-fill-mode))
@@ -310,7 +292,25 @@
            (cdb (concat large-jisyo ".cdb")))
       (if (file-exists-p cdb)
           (defvar skk-cdb-large-jisyo cdb)
-        (defvar skk-large-jisyo large-jisyo)))))
+        (defvar skk-large-jisyo large-jisyo))))
+
+  :config
+  ;; from skk-setup
+  ;; Isearch setting.
+  (defun skk-isearch-setup-maybe ()
+    (when (or (eq skk-isearch-mode-enable 'always)
+              (and (boundp 'skk-mode)
+                   skk-mode
+                   skk-isearch-mode-enable))
+      (skk-isearch-mode-setup)))
+
+  (defun skk-isearch-cleanup-maybe ()
+    (when (and (featurep 'skk-isearch)
+               skk-isearch-mode-enable)
+      (skk-isearch-mode-cleanup)))
+
+  (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
+  (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe))
 
 ;; slime
 (use-package slime
