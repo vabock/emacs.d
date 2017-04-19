@@ -7,6 +7,8 @@
     (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
         (normal-top-level-add-subdirs-to-load-path))))
 
+(setq default-directory "~/")
+
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode 0))
 (if (not window-system)
