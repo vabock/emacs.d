@@ -17,22 +17,19 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     (setq exec-path (split-string path-from-shell path-separator))))
 
 ;; フォント設定
-(setq w32-enable-synthesized-fonts t)
 (setq w32-use-w32-font-dialog nil)
 (setq-default line-spacing 1)
 
-(when t
-  (set-face-attribute 'default nil
-                      :family "Consolas"
-                      :height 120)
-
+(let ((_fontset (create-fontset-from-ascii-font "Consolas-12:weight=normal:slant=normal" nil "consolas12"))
+      (msgothic (font-spec :family "ＭＳ ゴシック" :registry "unicode-bmp" :lang 'ja)))
   (dolist (target '(japanese-jisx0212
                     japanese-jisx0213-2
                     japanese-jisx0213.2004-1
                     katakana-jisx0201))
-    (set-fontset-font (frame-parameter nil 'font)
-                      target
-                      (font-spec :family "ＭＳ ゴシック" :registry "unicode-bmp" :lang 'ja))))
+    (set-fontset-font _fontset target msgothic nil 'append))
+
+  (set-face-font 'default _fontset)
+  (add-to-list 'default-frame-alist (cons 'font _fontset)))
 
 ;;; IME の設定
 (setq default-input-method "W32-IME")
