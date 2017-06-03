@@ -125,10 +125,12 @@
     (require 'bind-key)
   (defmacro use-package (&rest args)))
 
-;(add-to-list 'custom-theme-load-path "~/.emacs.d/elisp/solarized-emacs")
-;(load-theme ‘solarized-dark t)
-(unless (require 'solarized-dark-theme nil 'noerror)
-  (require 'twilight-theme))
+(let ((theme-dir (expand-file-name "~/.emacs.d/elisp/solarized-emacs/")))
+  (if (file-accessible-directory-p theme-dir)
+      (add-to-list 'custom-theme-load-path theme-dir)))
+
+(unless (ignore-errors (load-theme 'solarized-dark t))
+  (load-theme 'twilight t))
 
 ;; company-mode
 (use-package company
