@@ -129,8 +129,11 @@
   (if (file-accessible-directory-p theme-dir)
       (add-to-list 'custom-theme-load-path theme-dir)))
 
-(unless (ignore-errors (load-theme 'solarized-dark t))
-  (load-theme 'twilight t))
+(unless (or (ignore-errors (load-theme 'solarized-dark t)) ; GUI用'solarized-theme'
+            (ignore-errors (load-theme 'twilight t)))      ;      'twilight-theme'
+  (add-to-list 'default-frame-alist
+               '(background-mode . dark))
+  (load-theme 'solarized t))            ; コンソール用'color-theme-solarized'
 
 ;; company-mode
 (use-package company
