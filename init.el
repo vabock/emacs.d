@@ -157,7 +157,7 @@
     (cond
      ((derived-mode-p 'c-mode 'c++-mode)
       (cond
-       ((eq system-type 'darwin)
+       ((executable-find "cppcheck")
         (flycheck-select-checker 'c/c++-cppcheck))
        ;; (setq flycheck-clang-include-path
        ;;       (list "/usr/local/Cellar/wxmac/3.0.2/lib/wx/include/osx_cocoa-unicode-3.0"
