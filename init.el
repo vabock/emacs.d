@@ -375,9 +375,10 @@
   :config
   (setq wgrep-auto-save-buffer t))
 
-(require 'server)
-(unless (server-running-p)
-  (server-start))
+(unless (daemonp)
+  (require 'server)
+  (unless (server-running-p)
+    (server-start)))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

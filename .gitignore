@@ -3,6 +3,7 @@
 etc/
 info/
 elisp/
+eshell/
 share/
 tutorial/
 server/
@@ -11,3 +12,4 @@ auto-save-list/
 /ac-comphist.dat
 /custom.el
 /recentf
+/find-file

@@ -1,0 +1,18 @@
+--- lib-src/emacsclient.c~	2017-02-03 19:25:44.000000000 +0900
++++ lib-src/emacsclient.c	2017-06-17 09:39:34.460026003 +0900
+@@ -1846,6 +1846,7 @@
+             }
+           else if (strprefix ("-print ", p))
+             {
++              if (eval && quiet) continue;
+               /* -print STRING: Print STRING on the terminal. */
+               str = unquote_argument (p + strlen ("-print "));
+               if (needlf)
+@@ -1855,6 +1856,7 @@
+             }
+           else if (strprefix ("-print-nonl ", p))
+             {
++              if (eval && quiet) continue;
+               /* -print-nonl STRING: Print STRING on the terminal.
+                  Used to continue a preceding -print command.  */
+               str = unquote_argument (p + strlen ("-print-nonl "));
