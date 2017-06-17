@@ -14,7 +14,6 @@
 (if (not window-system)
     (menu-bar-mode 0))
 
-(global-linum-mode 1)
 (column-number-mode 1)
 (line-number-mode 0)
 ;; カーソル行を強調表示
@@ -134,6 +133,13 @@
   (add-to-list 'default-frame-alist
                '(background-mode . dark))
   (load-theme 'solarized t))            ; コンソール用'color-theme-solarized'
+
+(use-package my-nlinum
+  :if (fboundp 'nlinum-mode)
+  :commands my/global-nlinum-mode
+  :init
+  (custom-set-variables '(nlinum-format "%3d"))
+  (add-hook 'after-init-hook 'my/global-nlinum-mode))
 
 ;; company-mode
 (use-package company
