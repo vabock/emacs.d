@@ -375,6 +375,13 @@
   :config
   (setq wgrep-auto-save-buffer t))
 
+(defun my/buffer-menu-adv (args)
+  (or (and (car args)
+           args)
+      '(1)))
+
+(advice-add 'list-buffers :filter-args #'my/buffer-menu-adv)
+
 (unless (daemonp)
   (require 'server)
   (unless (server-running-p)

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         }
     } else if (argc == 1) {
         v.push_back("-e");
-        v.push_back("(buffer-menu)");
+        v.push_back("(buffer-menu 1)");
     }
 
     if (quiet) {
