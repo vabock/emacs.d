@@ -60,6 +60,8 @@
 (show-paren-mode 1)
 (setq show-paren-style 'mixed)
 
+(setq inhibit-compacting-font-caches t)
+
 (defmacro my/build-fontset (ascii size cjk target)
   (when window-system
     (let ((sz (number-to-string size)))
