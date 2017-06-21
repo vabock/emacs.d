@@ -91,17 +91,19 @@
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 (load (file-name-sans-extension custom-file) t)
 
-(defmacro append-to-list (to lst)
-  `(setq ,to (append ,lst ,to)))
+(defmacro append-to-list (to lst &optional last)
+  `(set ,to ,(if last
+                 `(append (symbol-value ,to) ,lst)
+               `(append ,lst (symbol-value ,to)))))
 
 ;;; 新規フレームのデフォルト設定
 (when (boundp 'window-system)
-  (append-to-list default-frame-alist
+  (append-to-list 'default-frame-alist
                   '((width               . 120)	; フレーム幅(文字数)
                     (height              . 50))	; フレーム高(文字数)
                   )
   (if (eq window-system 'mac)
-      (append-to-list default-frame-alist
+      (append-to-list 'default-frame-alist
                       '((top  . 0)
                         (left . 0)))))
 
