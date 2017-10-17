@@ -100,6 +100,8 @@
   :init
   (add-hook 'after-init-hook #'global-company-mode)
   :config
+  (unless (eq system-type 'darwin)
+    (delete 'company-clang 'company-backends))
   (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
 
 ;; flycheck
@@ -108,6 +110,8 @@
   :if (fboundp 'global-flycheck-mode)
   :functions (error-tip-delete-popup error-tip-popup-error-message)
   :init
+  (unless (eq system-type 'darwin)
+    (setq-default flycheck-disabled-checkers '(c/c++-clang)))
   (add-hook 'after-init-hook #'global-flycheck-mode)
   :config
   (defun flycheck-cc-mode-checker-setup ()
