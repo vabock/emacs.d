@@ -92,6 +92,9 @@
   (custom-set-variables '(nlinum-format "%3d"))
   (add-hook 'after-init-hook 'my/global-nlinum-mode))
 
+(use-package magit-process
+  :commands magit-process-file)
+
 ;; company-mode
 (use-package company
   :defer t
