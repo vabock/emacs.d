@@ -67,7 +67,12 @@
       (when packages
         (package-refresh-contents)
         (dolist (pkg packages)
-          (package-install pkg))))))
+          (package-install pkg))))
+
+    ;; リストをStatus降順でソートする
+    (defun my/package-menu-sort-status-desc ()
+      (setq tabulated-list-sort-key (cons "Status" t)))
+    (add-hook 'package-menu-mode-hook 'my/package-menu-sort-status-desc)))
 
 (eval-when-compile
   (require 'use-package))
