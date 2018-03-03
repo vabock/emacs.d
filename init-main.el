@@ -359,6 +359,18 @@
 
 (advice-add 'list-buffers :filter-args #'my/buffer-menu-adv)
 
+(defun my/ignoring-dotfiles-f-n-completion (func &rest args)
+  (let ((x (apply func args)))
+    (if (and (listp x) (stringp (car x))
+             (cdr x))
+        (let ((result (cl-remove-if (lambda (f) (string-prefix-p "." f)) x)))
+          (if (and (listp result) (cdr result))
+              result
+            x))
+      x)))
+
+(advice-add 'completion-file-name-table :around 'my/ignoring-dotfiles-f-n-completion)
+
 (unless (daemonp)
   (require 'server)
   (unless (server-running-p)
