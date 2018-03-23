@@ -72,7 +72,7 @@
     ;; リストをStatus降順でソートする
     (defun my/package-menu-sort-status-desc ()
       (setq tabulated-list-sort-key (cons "Status" t)))
-    (add-hook 'package-menu-mode-hook 'my/package-menu-sort-status-desc)))
+    (add-hook 'package-menu-mode-hook #'my/package-menu-sort-status-desc)))
 
 (eval-when-compile
   (require 'use-package))
@@ -95,7 +95,7 @@
   :commands my/global-nlinum-mode
   :init
   (custom-set-variables '(nlinum-format "%3d"))
-  (add-hook 'after-init-hook 'my/global-nlinum-mode))
+  (add-hook 'after-init-hook #'my/global-nlinum-mode))
 
 (use-package magit-process
   :commands magit-process-file)
@@ -369,7 +369,7 @@
             x))
       x)))
 
-(advice-add 'completion-file-name-table :around 'my/ignoring-dotfiles-f-n-completion)
+(advice-add 'completion-file-name-table :around #'my/ignoring-dotfiles-f-n-completion)
 
 (unless (daemonp)
   (require 'server)
