@@ -1,11 +1,9 @@
 (setq inhibit-splash-screen t)
 (setq load-prefer-newer t)
 
-(let ((default-directory (expand-file-name "~/.emacs.d/elisp")))
-  (when (file-accessible-directory-p default-directory)
-    (add-to-list 'load-path default-directory)
-    (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-        (normal-top-level-add-subdirs-to-load-path))))
+(let ((elisp-dir (expand-file-name (concat user-emacs-directory "elisp"))))
+  (if (file-accessible-directory-p elisp-dir)
+      (add-to-list 'load-path elisp-dir)))
 
 (setq default-directory "~/")
 
