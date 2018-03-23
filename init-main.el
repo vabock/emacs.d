@@ -97,9 +97,6 @@
   (custom-set-variables '(nlinum-format "%3d"))
   (add-hook 'after-init-hook #'my/global-nlinum-mode))
 
-(use-package magit-process
-  :commands magit-process-file)
-
 ;; company-mode
 (use-package company
   :defer t
@@ -220,6 +217,10 @@
         (set-buffer-file-coding-system 'utf-8-unix)))
   (add-hook 'git-commit-setup-hook #'set-commit-log-encoding)
   (add-hook 'after-init-hook #'global-git-commit-mode))
+
+(use-package magit-process
+  :if (fboundp 'magit-version)
+  :commands magit-process-file)
 
 ;; ag
 (use-package ag
