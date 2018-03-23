@@ -287,39 +287,6 @@
   (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
   (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe))
 
-;; slime
-(use-package slime
-  :defer t
-  :if (fboundp 'slime-mode)
-  :config
-  (setq inferior-lisp-program "sbcl")
-  (setq slime-contribs '(slime-fancy slime-banner slime-indentation))
-  (setq slime-net-coding-system 'utf-8-unix)
-  (defun slime-mode-setup ()
-    (set-variable lisp-indent-function 'common-lisp-indent-function)
-    (local-set-key (kbd "RET") 'newline-and-indent))
-  (add-hook 'slime-mode-hook #'slime-mode-setup))
-
-
-;; popwin
-(when (require 'popwin nil 'noerror)
-  ;; Apropos
-  (push '("*slime-apropos*") popwin:special-display-config)
-  ;; Macroexpand
-  (push '("*slime-macroexpansion*") popwin:special-display-config)
-  ;; Help
-  (push '("*slime-description*") popwin:special-display-config)
-  ;; Compilation
-  (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
-  ;; Cross-reference
-  (push '("*slime-xref*") popwin:special-display-config)
-  ;; Debugger
-  (push '(sldb-mode :stick t) popwin:special-display-config)
-  ;; REPL
-  (push '(slime-repl-mode) popwin:special-display-config)
-  ;; Connections
-  (push '(slime-connection-list-mode) popwin:special-display-config))
-
 ;; coffee-script mode
 (use-package coffee-mode
   :defer t
