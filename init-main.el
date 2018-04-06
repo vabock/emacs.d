@@ -84,11 +84,13 @@
   (if (file-accessible-directory-p theme-dir)
       (add-to-list 'custom-theme-load-path theme-dir)))
 
-(unless (or (ignore-errors (load-theme 'solarized-dark t)) ; GUI用'solarized-theme'
-            (ignore-errors (load-theme 'twilight t)))      ;      'twilight-theme'
-  (add-to-list 'default-frame-alist
-               '(background-mode . dark))
-  (load-theme 'solarized t))            ; コンソール用'color-theme-solarized'
+(condition-case nil
+    (unless (or (ignore-errors (load-theme 'solarized-dark t)) ; GUI用'solarized-theme'
+                (ignore-errors (load-theme 'twilight t)))      ;      'twilight-theme'
+      (add-to-list 'default-frame-alist
+                   '(background-mode . dark))
+      (load-theme 'solarized t))            ; コンソール用'color-theme-solarized'
+  (error nil))
 
 (use-package my-nlinum
   :if (fboundp 'nlinum-mode)
