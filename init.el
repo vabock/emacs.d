@@ -1,9 +1,18 @@
 (setq inhibit-splash-screen t)
 (setq load-prefer-newer t)
 
-(let ((elisp-dir (expand-file-name (concat user-emacs-directory "elisp"))))
-  (if (file-accessible-directory-p elisp-dir)
-      (add-to-list 'load-path elisp-dir)))
+(require 'cl-lib)
+
+(let ((default-directory (expand-file-name (concat user-emacs-directory "elisp"))))
+  (when (file-accessible-directory-p default-directory)
+    (add-to-list 'load-path default-directory)
+    (let ((elisp-dirs
+           (mapcar #'car
+                   (cl-remove-if (lambda (dir) (or (not (eq (cadr dir) t))
+                                                   (string-prefix-p "." (car dir))))
+                                 (directory-files-and-attributes default-directory)))))
+      (if elisp-dirs
+          (normal-top-level-add-to-load-path elisp-dirs)))))
 
 (setq default-directory "~/")
 
@@ -79,7 +88,6 @@
 (setq vc-handled-backends nil)
 
 ;;; すべてのバッファを閉じるメニューアイテムを追加
-(require 'cl-lib)
 (defun close-all-buffers ()
   (interactive)
   (mapc 'kill-buffer (cl-remove-if (lambda (buf) (string-prefix-p "*" (buffer-name buf))) (buffer-list))))
