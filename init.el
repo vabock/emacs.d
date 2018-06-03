@@ -74,7 +74,9 @@
   (load (expand-file-name "~/.emacs.d/init-mac")))
  (t
   (set-file-name-coding-system 'utf-8)
-  (define-key local-function-key-map "\033[37;6~" (kbd "C-%"))))
+  (define-key local-function-key-map "\033[37;6~" (kbd "C-%"))
+  (if (eq window-system 'x)
+      (load (expand-file-name "~/.emacs.d/init-x")))))
 
 (define-key key-translation-map (kbd "C-h") (kbd "DEL"))
 ;(keyboard-translate ?\C-h ?\C-?)
