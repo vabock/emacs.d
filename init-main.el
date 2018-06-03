@@ -16,7 +16,7 @@
                       '((top  . 0)
                         (left . 0)))))
 
-(defconst my/bootstrap-packages '(use-package))
+(defconst my/bootstrap-packages '(use-package diminish))
 (defvar my/packages
   '(company
     auto-compile
