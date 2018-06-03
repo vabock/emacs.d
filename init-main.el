@@ -61,9 +61,8 @@
     (add-to-list 'package-archives
                  '("melpa" . "http://melpa.milkbox.net/packages/") t)
     (package-initialize)
-    (delete 'nil my/packages)
     (let ((packages (cl-remove-if #'package-installed-p
-                                  (append my/bootstrap-packages my/packages))))
+                                  (append my/bootstrap-packages (delete 'nil my/packages)))))
       (when packages
         (package-refresh-contents)
         (dolist (pkg packages)
@@ -108,7 +107,8 @@
   (add-hook 'after-init-hook #'global-company-mode)
   :config
   (unless (eq system-type 'darwin)
-    (delete 'company-clang 'company-backends))
+    (custom-set-variables `(company-backends
+                            ,(delete 'company-clang company-backends))))
   (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
 
 ;; flycheck
