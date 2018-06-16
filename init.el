@@ -60,6 +60,21 @@
 (show-paren-mode 1)
 (setq show-paren-style 'mixed)
 
+(defmacro my/build-fontset (ascii size cjk target)
+  (when window-system
+    (let ((sz (number-to-string size)))
+      `(let ((_fontset (create-fontset-from-ascii-font ,(concat ascii "-" sz ":weight=normal:slant=normal") nil
+                                                       ,(concat (downcase ascii) sz)))
+             (cjk ,(append `(font-spec :family ,cjk)
+                           (if (eq system-type 'windows-nt)
+                               '(:registry "unicode-bmp" :lang 'ja)))))
+         (dolist (target ,target)
+           (set-fontset-font _fontset target cjk nil 'append))
+
+         (set-face-font 'default _fontset)
+         (add-to-list 'default-frame-alist (cons 'font _fontset))))))
+
+
 ;(set-language-environment "japanese")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)

@@ -20,16 +20,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (setq w32-use-w32-font-dialog nil)
 (setq-default line-spacing 1)
 
-(let ((_fontset (create-fontset-from-ascii-font "Consolas-12:weight=normal:slant=normal" nil "consolas12"))
-      (msgothic (font-spec :family "ＭＳ ゴシック" :registry "unicode-bmp" :lang 'ja)))
-  (dolist (target '(japanese-jisx0212
+(my/build-fontset "Consolas" 12 "ＭＳ ゴシック"
+                  '(japanese-jisx0212
                     japanese-jisx0213-2
                     japanese-jisx0213.2004-1
                     katakana-jisx0201))
-    (set-fontset-font _fontset target msgothic nil 'append))
-
-  (set-face-font 'default _fontset)
-  (add-to-list 'default-frame-alist (cons 'font _fontset)))
 
 ;;; IME の設定
 (setq default-input-method "W32-IME")

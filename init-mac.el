@@ -15,14 +15,9 @@
   (global-set-key [(hyper z)] 'undo)
   (global-set-key [(hyper u)] 'revert-buffer))
 
-(let ((_fontset (create-fontset-from-ascii-font "Menlo-14:weight=normal:slant=normal" nil "menlo"))
-      (ricty (font-spec :family "Ricty")))
-  (dolist (target '(japanese-jisx0213.2004-1
+(my/build-fontset "Menlo" 14 "Ricty"
+                  '(japanese-jisx0213.2004-1
                     katakana-jisx0201))
-    (set-fontset-font _fontset target ricty nil 'append))
-
-  (set-face-font 'default _fontset)
-  (add-to-list 'default-frame-alist (cons 'font _fontset)))
 
 (add-to-list 'face-font-rescale-alist
              '(".*Ricty.*" . 1.2))
