@@ -18,13 +18,13 @@
 
 (defconst my/bootstrap-packages '(use-package diminish))
 (defvar my/packages
-  '(company
+  `(company
     auto-compile
     editorconfig
     ddskk
     rg
     wgrep
-    nlinum
+    ,(if (< emacs-major-version 26) 'nlinum)
     yaml-mode
     markdown-mode))
 
@@ -92,11 +92,29 @@
   (error nil))
 
 (use-package my-nlinum
-  :if (fboundp 'nlinum-mode)
+  :if (and (fboundp 'nlinum-mode)
+           (< emacs-major-version 26))
   :commands my/global-nlinum-mode
   :init
   (custom-set-variables '(nlinum-format "%3d"))
   (add-hook 'after-init-hook #'my/global-nlinum-mode))
+
+(use-package display-line-numbers
+  :defer t
+  :if (>= emacs-major-version 26)
+  :init
+  (add-hook 'after-init-hook #'global-display-line-numbers-mode)
+  (defun my/display-line-numbers--turn-on ()
+    "Turn on `display-line-numbers-mode'."
+    (unless (or (minibufferp)
+                (member major-mode '(shell-mode eshell-mode))
+                (string-match "*" (buffer-name))
+                (> (buffer-size) 3000000)
+                ;; taken from linum.el
+                (and (daemonp) (null (frame-parameter nil 'client))))
+      (display-line-numbers-mode)))
+  :config
+  (fset 'display-line-numbers--turn-on 'my/display-line-numbers--turn-on))
 
 ;; company-mode
 (use-package company

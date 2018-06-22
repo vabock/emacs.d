@@ -2,7 +2,6 @@
 *~
 etc/
 info/
-elisp/
 eshell/
 share/
 tutorial/
@@ -13,3 +12,4 @@ auto-save-list/
 /custom.el
 /recentf
 /find-file
+/elpa/
