@@ -125,8 +125,7 @@
   (add-hook 'after-init-hook #'global-company-mode)
   :config
   (unless (eq system-type 'darwin)
-    (custom-set-variables `(company-backends
-                            ,(delete 'company-clang company-backends))))
+    (setq-default company-backends (delete 'company-clang company-backends)))
   (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
 
 ;; flycheck
