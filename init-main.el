@@ -253,12 +253,15 @@
 (defvar dropbox-path
   (cond
    ((eq system-type 'windows-nt)
-    (let ((documents (concat (getenv "USERPROFILE") "/Documents/My Dropbox"))
+    (let ((userfolder (concat (getenv "USERPROFILE") "/Dropbox"))
           (json-path (concat (getenv "LOCALAPPDATA") "/Dropbox/info.json")))
-      (if (file-accessible-directory-p documents)
-          documents
+      (cond
+       ((file-accessible-directory-p userfolder)
+        userfolder)
+       ((file-exists-p json-path)
         (require 'json)
-        (cdr (assoc 'path (assoc 'personal (json-read-file json-path)))))))
+        (cdr (assoc 'path (assoc 'personal (json-read-file json-path)))))
+       (t nil))))
    ((eq system-type 'darwin)
     (expand-file-name "~/Dropbox"))
    (t nil)))
