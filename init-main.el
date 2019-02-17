@@ -14,7 +14,9 @@
   (if (eq window-system 'mac)
       (append-to-list 'default-frame-alist
                       '((top  . 0)
-                        (left . 0)))))
+                        (left . 0))))
+  (if (eq window-system 'w32)
+      (setf (alist-get 'height default-frame-alist) 45)))
 
 (defconst my/bootstrap-packages '(use-package diminish))
 (defvar my/packages
