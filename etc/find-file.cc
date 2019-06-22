@@ -53,5 +53,5 @@ int main(int argc, char **argv)
     // std::copy(v.begin(), v.end() - 1, std::ostream_iterator<const char *>(std::cout, " "));
     // std::cout << std::endl;
 
-    return execv(emacsclient, (char* const*)v.data());
+    return execv(emacsclient, const_cast<char* const*>(v.data()));
 }
