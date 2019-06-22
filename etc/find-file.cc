@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     }
 
     if (quiet) {
-        v.insert(v.begin() + 1, "-q");
+        v.insert(v.begin() + 1, { "-q", "-u" });
     }
 
     if (create_frame) {
