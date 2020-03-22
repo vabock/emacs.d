@@ -20,11 +20,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (setq w32-use-w32-font-dialog nil)
 (setq-default line-spacing 1)
 
-(my/build-fontset "Consolas" 12 "ＭＳ ゴシック"
+(my/build-fontset "JetBrains Mono Medium" 10 "BIZ UDゴシック"
                   '(japanese-jisx0212
                     japanese-jisx0213-2
                     japanese-jisx0213.2004-1
                     katakana-jisx0201))
+
+(add-to-list 'face-font-rescale-alist
+             '(".*BIZ UDゴシック.*" . 1.1))
 
 ;;; IME の設定
 (setq default-input-method "W32-IME")
