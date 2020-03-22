@@ -66,7 +66,8 @@
   (when window-system
     (let ((sz (number-to-string size)))
       `(let ((_fontset (create-fontset-from-ascii-font ,(concat ascii "-" sz ":weight=normal:slant=normal") nil
-                                                       ,(concat (downcase ascii) sz)))
+                                                       ,(replace-regexp-in-string "\\s-" "_"
+                                                                                  (concat (downcase ascii) sz))))
              (cjk ,(append `(font-spec :family ,cjk)
                            (if (eq system-type 'windows-nt)
                                '(:registry "unicode-bmp" :lang 'ja)))))
