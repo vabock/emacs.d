@@ -41,9 +41,7 @@
 (add-to-list 'my/packages
              (cond
               ((eq window-system 'w32) 'twilight-theme)
-              ;; ((eq window-system 'mac) 'solarized-theme)
-              ((not (display-graphic-p)) 'color-theme-solarized)
-              (t nil))
+              (t 'solarized-theme))
              t)
 
 (require 'cl-lib)
@@ -85,13 +83,8 @@
   (if (file-accessible-directory-p theme-dir)
       (add-to-list 'custom-theme-load-path theme-dir)))
 
-(condition-case nil
-    (unless (or (ignore-errors (load-theme 'solarized-dark t)) ; GUI用'solarized-theme'
-                (ignore-errors (load-theme 'twilight t)))      ;      'twilight-theme'
-      (add-to-list 'default-frame-alist
-                   '(background-mode . dark))
-      (load-theme 'solarized t))            ; コンソール用'color-theme-solarized'
-  (error nil))
+(or (ignore-errors (load-theme 'solarized-dark t))      ; 'solarized-theme'
+    (ignore-errors (load-theme 'twilight t)))           ; 'twilight-theme'
 
 (use-package my-nlinum
   :if (and (fboundp 'nlinum-mode)
