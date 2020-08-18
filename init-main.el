@@ -59,7 +59,7 @@
           package-enable-at-startup nil
           package--init-file-ensured t)
     (add-to-list 'package-archives
-                 '("melpa" . "https://melpa.milkbox.net/packages/") t)
+                 '("melpa" . "https://melpa.org/packages/") t)
     (package-initialize)
     (let ((packages (cl-remove-if #'package-installed-p
                                   (append my/bootstrap-packages (delete 'nil my/packages)))))
