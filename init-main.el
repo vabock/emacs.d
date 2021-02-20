@@ -179,12 +179,12 @@
   :init
   (add-hook 'after-init-hook #'global-whitespace-mode)
   :config
-  (setq whitespace-style '(face           ; faceで可視化
-                           trailing       ; 行末
-                           tabs           ; タブ
-                           spaces         ; スペース
-                           empty          ; 先頭/末尾の空行
-                           space-mark     ; 表示のマッピング
+  (setq whitespace-style '(face         ; faceで可視化
+                           trailing     ; 行末
+                           tabs         ; タブ
+                           spaces       ; スペース
+                           empty        ; 先頭/末尾の空行
+                           space-mark   ; 表示のマッピング
 ;;;                         tab-mark
                            ))
 
@@ -239,6 +239,7 @@
 ;; ag
 (use-package ag
   :defer t
+  :defines (ag-highlight-search ag-reuse-buffers)
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t))
