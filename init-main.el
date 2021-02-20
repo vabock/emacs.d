@@ -103,7 +103,9 @@
     "Turn on `display-line-numbers-mode'."
     (unless (or (minibufferp)
                 (member major-mode '(shell-mode eshell-mode))
-                (string-match "*" (buffer-name))
+                (let ((name (buffer-name)))
+                  (or (string-match "*" name)
+                      (string-match "vterm" name)))
                 (> (buffer-size) 3000000)
                 ;; taken from linum.el
                 (and (daemonp) (null (frame-parameter nil 'client))))
