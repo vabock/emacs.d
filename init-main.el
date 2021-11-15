@@ -226,13 +226,14 @@
 ;; git-commit-mode
 (use-package git-commit
   :defer t
-  :if (fboundp 'global-git-commit-mode)
-  :init
-  (defun set-commit-log-encoding ()
+  :if (fboundp 'magit-version)
+  :commands global-git-commit-mode
+  :hook (after-init . global-git-commit-mode)
+  :config
+  (defun my/set-commit-log-encoding ()
     (if (string-match-p "^undecided" (symbol-name buffer-file-coding-system))
         (set-buffer-file-coding-system 'utf-8-unix)))
-  (add-hook 'git-commit-setup-hook #'set-commit-log-encoding)
-  (add-hook 'after-init-hook #'global-git-commit-mode))
+  (add-hook 'git-commit-setup-hook #'my/set-commit-log-encoding))
 
 (use-package magit-process
   :if (fboundp 'magit-version)
