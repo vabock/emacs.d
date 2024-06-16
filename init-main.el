@@ -34,8 +34,9 @@
     yaml-mode
     markdown-mode))
 
-(unless (eq system-type 'windows-nt)
-  (append-to-list 'my/packages
+(append-to-list 'my/packages
+                (if (eq system-type 'windows-nt)
+                    '(tr-ime)
                   `(flycheck
                     ,(unless (display-graphic-p) 'flycheck-tip)
                     flycheck-pos-tip

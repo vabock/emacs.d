@@ -17,8 +17,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     (setq exec-path (split-string path-from-shell path-separator))))
 
 ;; フォント設定
-(setq w32-use-w32-font-dialog nil)
-(setq-default line-spacing 1)
+(when window-system
+  (setq w32-use-w32-font-dialog nil)
+  (setq-default line-spacing 1))
 
 (my/build-fontset "JetBrains Mono Medium" 10 "BIZ UDゴシック"
                   '(japanese-jisx0212
@@ -30,11 +31,19 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
              '(".*BIZ UDゴシック.*" . 1.1))
 
 ;;; IME の設定
-(setq default-input-method "W32-IME")
-(setq-default w32-ime-mode-line-state-indicator "[--]") ;; おこのみで
-(setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]")) ;; おこのみで
-(w32-ime-initialize)
-(global-set-key (kbd "M-<kanji>") (lambda () (interactive) t))
+;;; パッケージの読み込み、初期化は環境設定用init-*.elの後に実行されるので注意
+(defun my/ime-setup ()
+  "ime setup for windows"
+  (when (fboundp 'w32-ime-initialize)
+    (if (fboundp 'tr-ime-advanced-install)
+        (tr-ime-advanced-install))
+    (setq default-input-method "W32-IME")
+    (setq-default w32-ime-mode-line-state-indicator "[--]") ;; おこのみで
+    (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]")) ;; おこのみで
+    (w32-ime-initialize)
+    (global-set-key [M-kanji] 'ignore)))
+
+(add-hook 'after-init-hook #'my/ime-setup)
 
 ;; start-process での起動時に、fakecygpty.exe を経由させたいプログラム名を列挙する
 ;; suffix に .exe が付くコマンドは、その suffix を記載しないこと
