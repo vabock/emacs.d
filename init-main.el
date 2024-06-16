@@ -90,15 +90,14 @@
   :if (and (fboundp 'nlinum-mode)
            (< emacs-major-version 26))
   :commands my/global-nlinum-mode
-  :init
-  (custom-set-variables '(nlinum-format "%3d"))
-  (add-hook 'after-init-hook #'my/global-nlinum-mode))
+  :custom (nlinum-format "%3d")
+  :hook (after-init . my/global-nlinum-mode))
 
 (use-package display-line-numbers
   :defer t
   :if (>= emacs-major-version 26)
+  :hook (after-init . global-display-line-numbers-mode)
   :init
-  (add-hook 'after-init-hook #'global-display-line-numbers-mode)
   (defun my/display-line-numbers--turn-on ()
     "Turn on `display-line-numbers-mode'."
     (unless (or (minibufferp)
@@ -117,23 +116,26 @@
 (use-package company
   :defer t
   :if (fboundp 'global-company-mode)
+  :bind (:map company-active-map
+              ("[tab]" . 'company-complete-common-or-cycle))
+  :hook (after-init . global-company-mode)
   :diminish company-mode
-  :init
-  (add-hook 'after-init-hook #'global-company-mode)
   :config
   (unless (eq system-type 'darwin)
-    (setq-default company-backends (delete 'company-clang company-backends)))
-  (bind-key "<tab>" 'company-complete-common-or-cycle company-active-map))
+    (setopt company-backends (delete 'company-clang company-backends))))
 
 ;; flycheck
 (use-package flycheck
   :defer t
   :if (fboundp 'global-flycheck-mode)
   :functions (error-tip-delete-popup error-tip-popup-error-message)
+  :hook (after-init . global-flycheck-mode)
+  :bind (:map flycheck-mode-map
+             ("C-c C-n" . flycheck-next-error)
+             ("C-c C-p" . flycheck-previous-error))
   :init
   (unless (eq system-type 'darwin)
-    (setq-default flycheck-disabled-checkers '(c/c++-clang)))
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+    (setopt flycheck-disabled-checkers '(c/c++-clang)))
   :config
   (defun flycheck-cc-mode-checker-setup ()
     (cond
@@ -149,9 +151,6 @@
      ((derived-mode-p 'python-mode)
       (flycheck-select-checker 'python-pylint))))
   (add-hook 'flycheck-before-syntax-check-hook #'flycheck-cc-mode-checker-setup)
-  (bind-keys :map flycheck-mode-map
-             ("C-c C-n" . flycheck-next-error)
-             ("C-c C-p" . flycheck-previous-error))
 
   (flycheck-pos-tip-mode)
 
@@ -162,8 +161,7 @@
         (error-tip-delete-popup)
         (let ((msgs (mapcar #'flycheck-error-format-message-and-id errors)))
           (error-tip-popup-error-message msgs))))
-    (custom-set-variables
-     '(flycheck-pos-tip-display-errors-tty-function #'flycheck-pos-tip-tty-popup))))
+    (setopt flycheck-pos-tip-display-errors-tty-function #'flycheck-pos-tip-tty-popup)))
 
 
 (use-package typescript-mode
