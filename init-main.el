@@ -18,7 +18,11 @@
   (if (eq window-system 'w32)
       (setf (alist-get 'height default-frame-alist) 45)))
 
-(defconst my/bootstrap-packages '(use-package diminish))
+(defconst my/bootstrap-packages
+  (if (< emacs-major-version 29)
+      '(use-package diminish)
+    '(diminish)))
+
 (defvar my/packages
   `(company
     auto-compile
