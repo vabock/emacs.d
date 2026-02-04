@@ -8,15 +8,13 @@
 ;;; 新規フレームのデフォルト設定
 (when (boundp 'window-system)
   (append-to-list 'default-frame-alist
-                  '((width               . 120)	; フレーム幅(文字数)
-                    (height              . 50))	; フレーム高(文字数)
+                  '((width               . 130)	; フレーム幅(文字数)
+                    (height              . 45))	; フレーム高(文字数)
                   )
   (if (eq window-system 'mac)
       (append-to-list 'default-frame-alist
                       '((top  . 0)
-                        (left . 0))))
-  (if (eq window-system 'w32)
-      (setf (alist-get 'height default-frame-alist) 45)))
+                        (left . 0)))))
 
 (defconst my/bootstrap-packages
   (if (< emacs-major-version 29)
