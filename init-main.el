@@ -60,7 +60,7 @@
       (require 'pallet))
   ;; setup package.el
   (when (require 'package nil 'noerror)
-    (setq package-user-dir "~/.emacs.d/elisp/elpa"
+    (setq package-user-dir (expand-file-name "elisp/elpa" user-emacs-directory)
           package-enable-at-startup nil
           package--init-file-ensured t)
     (add-to-list 'package-archives
@@ -84,7 +84,7 @@
 (require 'bind-key)
 (require 'diminish)
 
-(let ((theme-dir (expand-file-name "~/.emacs.d/elisp/solarized-emacs/")))
+(let ((theme-dir (expand-file-name "elisp/solarized-emacs/" user-emacs-directory)))
   (if (file-accessible-directory-p theme-dir)
       (add-to-list 'custom-theme-load-path theme-dir)))
 
@@ -287,7 +287,7 @@
       (setq skk-jisyo (concat dropbox-path "/skk-jisyo.utf8")))
 
   (unless (boundp 'skk-server-host)
-    (let* ((large-jisyo (expand-file-name "~/.emacs.d/etc/skk/SKK-JISYO.L"))
+    (let* ((large-jisyo (expand-file-name "etc/skk/SKK-JISYO.L" user-emacs-directory))
            (cdb (concat large-jisyo ".cdb")))
       (if (file-exists-p cdb)
           (defvar skk-cdb-large-jisyo cdb)

@@ -3,7 +3,7 @@
 
 (require 'cl-lib)
 
-(let ((default-directory (expand-file-name (concat user-emacs-directory "elisp"))))
+(let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
   (when (file-accessible-directory-p default-directory)
     (add-to-list 'load-path default-directory)
     (let ((elisp-dirs
@@ -84,17 +84,17 @@
 (cond
  ((eq system-type 'windows-nt)
   (set-file-name-coding-system 'japanese-cp932)
-  (load (expand-file-name "~/.emacs.d/init-w32")))
+  (load (expand-file-name "init-w32" user-emacs-directory)))
  ((eq system-type 'darwin)
   (require 'ucs-normalize)
   (set-file-name-coding-system 'utf-8-hfs)
   (setq locale-coding-system 'utf-8-hfs)
-  (load (expand-file-name "~/.emacs.d/init-mac")))
+  (load (expand-file-name "init-mac" user-emacs-directory)))
  (t
   (set-file-name-coding-system 'utf-8)
   (define-key local-function-key-map "\033[37;6~" (kbd "C-%"))
   (if (eq window-system 'x)
-      (load (expand-file-name "~/.emacs.d/init-x")))))
+      (load (expand-file-name "init-x" user-emacs-directory)))))
 
 (define-key key-translation-map (kbd "C-h") (kbd "DEL"))
 ;(keyboard-translate ?\C-h ?\C-?)
@@ -114,10 +114,10 @@
 
 (define-key-after menu-bar-file-menu [kill-all-buffer] '("Close all" . close-all-buffers) 'kill-buffer)
 
-(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load (file-name-sans-extension custom-file) t)
 
-(load (expand-file-name "~/.emacs.d/init-main"))
+(load (expand-file-name "init-main" user-emacs-directory))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
