@@ -62,13 +62,14 @@
 
 (setq inhibit-compacting-font-caches t)
 
-(defmacro my/build-fontset (ascii size cjk target)
+(defmacro my/build-fontset (ascii size cjk target &optional weight)
   (when window-system
-    (let ((sz (number-to-string size)))
-      `(let ((_fontset (create-fontset-from-ascii-font ,(concat ascii "-" sz ":weight=normal:slant=normal") nil
+    (let ((sz (number-to-string size))
+          (weight (or weight "normal")))
+      `(let ((_fontset (create-fontset-from-ascii-font ,(concat ascii "-" sz ":weight=" weight ":slant=normal") nil
                                                        ,(replace-regexp-in-string "\\s-" "_"
                                                                                   (concat (downcase ascii) sz))))
-             (cjk ,(append `(font-spec :family ,cjk)
+             (cjk ,(append `(font-spec :family ,cjk :weight 'normal)
                            (if (eq system-type 'windows-nt)
                                '(:registry "unicode-bmp" :lang 'ja)))))
          (dolist (target ,target)
