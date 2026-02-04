@@ -14,7 +14,19 @@
   (if (eq window-system 'mac)
       (append-to-list 'default-frame-alist
                       '((top  . 0)
-                        (left . 0)))))
+                        (left . 0))))
+
+  ;; [Center Window on the Current Monitor in Emacs, Simplified • Christian Tietze](https://christiantietze.de/posts/2022/04/emacs-center-window-current-monitor-simplified/)
+  (defun my/frame-recenter (&optional frame)
+    "Center FRAME on the screen.
+FRAME can be a frame name, a terminal name, or a frame.
+If FRAME is omitted or nil, use currently selected frame."
+    (interactive)
+    (unless (eq 'maximised (frame-parameter nil 'fullscreen))
+      (modify-frame-parameters
+       frame '((user-position . t) (top . 0.5) (left . 0.5)))))
+
+  (add-hook 'window-setup-hook (lambda () (run-at-time 0.2 nil #'my/frame-recenter))))
 
 (defconst my/bootstrap-packages
   (if (< emacs-major-version 29)
