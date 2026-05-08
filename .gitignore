@@ -1,6 +1,5 @@
 *.elc
 *~
-etc/
 info/
 eshell/
 share/
