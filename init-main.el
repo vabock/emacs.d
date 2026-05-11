@@ -252,14 +252,6 @@ If FRAME is omitted or nil, use currently selected frame."
   :if (fboundp 'magit-version)
   :commands magit-process-file)
 
-;; ag
-(use-package ag
-  :defer t
-  :defines (ag-highlight-search ag-reuse-buffers)
-  :config
-  (setq ag-highlight-search t)
-  (setq ag-reuse-buffers t))
-
 (defvar dropbox-path
   (cond
    ((eq system-type 'windows-nt)
@@ -320,12 +312,6 @@ If FRAME is omitted or nil, use currently selected frame."
 
   (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
   (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe))
-
-;; coffee-script mode
-(use-package coffee-mode
-  :defer t
-  :config
-  (custom-set-variables '(coffee-tab-width 2)))
 
 ;; auto-compile-mode
 (use-package auto-compile
