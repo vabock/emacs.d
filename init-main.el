@@ -36,7 +36,7 @@ If FRAME is omitted or nil, use currently selected frame."
 (defvar my/packages
   `(company
     auto-compile
-    editorconfig
+    ,(if (< emacs-major-version 30) 'editorconfig)
     ddskk
     rg
     wgrep
